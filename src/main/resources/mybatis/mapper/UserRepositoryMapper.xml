@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.pinkchampagne17.channelserver.repository.UserRepository">
+    <resultMap id="userMap" type="io.github.pinkchampagne17.channelserver.entity.User">
+        <id column="gid" property="id"></id>
+        <result column="photo_md5" property="photoMd5"></result>
+        <result column="is_online" property="isOnline"></result>
+        <result column="create_at" property="createAt"></result>
+        <result column="update_at" property="updateAt"></result>
+    </resultMap>
+    <select id="getUserById" resultType="io.github.pinkchampagne17.channelserver.entity.User" resultMap="userMap" parameterType="java.lang.Long">
+        select u.gid, u.email, u.password, u.name, u.bio, u.photo_md5, u.is_online, u.create_at, u.update_at, g.username
+        from `user` u join `gid` g on u.gid = g.gid
+        where u.gid = #{id}
+    </select>
+</mapper>
