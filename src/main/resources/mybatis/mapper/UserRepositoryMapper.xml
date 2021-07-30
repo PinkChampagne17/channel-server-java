@@ -11,8 +11,16 @@
         <result column="update_at" property="updateAt"></result>
     </resultMap>
     <select id="getUserById" resultType="io.github.pinkchampagne17.channelserver.entity.User" resultMap="userMap" parameterType="java.lang.Long">
-        select u.gid, u.email, u.password, u.name, u.bio, u.photo_md5, u.is_online, u.create_at, u.update_at, g.username
+        select u.gid, u.email, u.password, u.name, u.bio, u.photo_md5, u.is_online, g.create_at, g.update_at, g.username
         from `user` u join `gid` g on u.gid = g.gid
         where u.gid = #{id}
     </select>
+    <insert id="createGidAndUsername" useGeneratedKeys="true" keyProperty="gid" parameterType="io.github.pinkchampagne17.channelserver.parameters.CreateUserParameters">
+        insert into gid(username) values(#{username})
+    </insert>
+    <insert id="createUserByGid" parameterType="io.github.pinkchampagne17.channelserver.parameters.CreateUserParameters">
+        insert into `user`(gid, email, password, name, hash_id)
+        values(#{gid}, #{email}, #{password}, #{name}, #{hashId})
+    </insert>
+
 </mapper>
