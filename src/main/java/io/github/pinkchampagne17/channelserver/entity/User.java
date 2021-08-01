@@ -1,16 +1,20 @@
 package io.github.pinkchampagne17.channelserver.entity;
 
-import io.github.pinkchampagne17.channelserver.util.HashId;
-import io.github.pinkchampagne17.channelserver.util.ISO8601;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
 public class User {
+    @JsonIgnore
     private Long id;
+
+    @JsonProperty("id")
+    private String hashId;
+
     private String email;
-    private String password;
     private String username;
     private String name;
     private String bio;
@@ -18,16 +22,4 @@ public class User {
     private Boolean isOnline;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
-
-    public String getId() {
-        return HashId.encodeOne(this.id);
-    }
-
-    public String getCreateAt() {
-        return ISO8601.of(this.createAt);
-    }
-
-    public String getUpdateAt() {
-        return ISO8601.of(this.updateAt);
-    }
 }

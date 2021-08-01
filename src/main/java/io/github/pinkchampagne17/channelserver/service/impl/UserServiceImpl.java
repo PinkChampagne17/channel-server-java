@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.getUserById(id);
     }
 
-    public User createUser(CreateUserParameters parameters) throws Exception {
+    public User createUser(CreateUserParameters parameters) throws SQLIntegrityConstraintViolationException {
         this.userRepository.createGidAndUsername(parameters);
         var gid = parameters.getGid();
         var hashId = HashId.encodeOne(gid);

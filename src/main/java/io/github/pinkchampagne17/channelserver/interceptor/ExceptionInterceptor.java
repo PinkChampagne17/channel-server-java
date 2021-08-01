@@ -9,6 +9,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ExceptionInterceptor {
 
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> ExceptionHandler(Exception e) {
+        var messages = e.getMessage();
+        System.out.printf("ExceptionHandler: %s\n", messages);
+        return ResponseEntity.internalServerError().build();
+    }
+
     @ExceptionHandler(ParameterInvalidException.class)
     public ResponseEntity<ErrorResponse> ParameterInvalidExceptionHandler(ParameterInvalidException e) {
         var errorResponse = new ErrorResponse(
@@ -18,10 +26,6 @@ public class ExceptionInterceptor {
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<ErrorResponse> ExceptionHandler(Exception e) {
-//        System.out.println(e.getMessage());
-//        return ResponseEntity.internalServerError().build();
-//    }
+
 
 }
