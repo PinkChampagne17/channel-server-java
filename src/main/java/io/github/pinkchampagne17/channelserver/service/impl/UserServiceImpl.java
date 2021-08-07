@@ -17,13 +17,16 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     public User getUserByHashId(String hashId) {
-        return getUser(new GetUsersParameters(){{
+        var parameters = new GetUsersParameters() {{
             setHashId(hashId);
-        }});
+        }};
+        return getUser(parameters);
     }
 
     @Override
     public User getUser(GetUsersParameters parameters) {
+        parameters.setCount(1L);
+
         var users = userRepository.getUsers(parameters);
         if (users.size() == 0) {
             return null;

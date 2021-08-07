@@ -1,4 +1,4 @@
-package io.github.pinkchampagne17.channelserver.interceptor;
+package io.github.pinkchampagne17.channelserver.exception;
 
 import org.springframework.validation.BindingResult;
 

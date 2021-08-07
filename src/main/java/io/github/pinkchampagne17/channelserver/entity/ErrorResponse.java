@@ -7,11 +7,11 @@ import java.util.List;
 
 @Data
 public class ErrorResponse {
-    private int statusCode;
+    private int code;
     private List<String> messages;
 
-    public ErrorResponse(int statusCode, List<String> messages) {
-        this.statusCode = statusCode;
+    public ErrorResponse(int code, List<String> messages) {
+        this.code = code;
         this.messages = messages;
     }
 

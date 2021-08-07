@@ -1,16 +1,18 @@
 package io.github.pinkchampagne17.channelserver.controller;
 
 import io.github.pinkchampagne17.channelserver.entity.User;
-import io.github.pinkchampagne17.channelserver.interceptor.ParameterInvalidException;
+import io.github.pinkchampagne17.channelserver.exception.ParameterInvalidException;
 import io.github.pinkchampagne17.channelserver.parameters.CreateUserParameters;
 import io.github.pinkchampagne17.channelserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
 
 @RestController
 @RequestMapping("/users")
@@ -19,9 +21,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable @Valid String id) {
-        var user = this.userService.getUserByHashId(id);
+    @GetMapping("/{hashId}")
+    public ResponseEntity<User> getUserByHashId(@PathVariable String hashId) {
+        var user = this.userService.getUserByHashId(hashId);
 
         if (user == null) {
             return ResponseEntity.notFound().build();
@@ -43,7 +45,7 @@ public class UserController {
             return ResponseEntity.ok(user);
         } catch (Exception e) {
             if (e instanceof DuplicateKeyException) {
-                throw new ParameterInvalidException("This username or email already exists.");
+                throw new ParameterInvalidException("This username or email is already taken.");
             } else {
                 throw e;
             }
