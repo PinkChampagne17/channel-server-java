@@ -4,7 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="io.github.pinkchampagne17.channelserver.repository.UserRepository">
     <resultMap id="userMap" type="io.github.pinkchampagne17.channelserver.entity.User">
-        <id column="gid" property="id"/>
         <result column="hash_id" property="hashId"/>
         <result column="photo_md5" property="photoMd5"/>
         <result column="is_online" property="isOnline"/>
@@ -19,7 +18,7 @@
     >
         select u.gid, u.hash_id, u.email, u.password, u.name, u.bio, u.photo_md5, u.is_online, g.create_at, g.update_at, g.username
         from `user` u join `gid` g on u.gid = g.gid
-        where u.gid = #{id}
+        where u.gid = #{gid}
         limit 1
     </select>
     <select
@@ -31,8 +30,8 @@
         select u.gid, u.hash_id, u.email, u.password, u.name, u.bio, u.photo_md5, u.is_online, g.create_at, g.update_at, g.username
         from `user` u join `gid` g on u.gid = g.gid
         <where>
-            <if test="id!=null">
-                and u.gid = #{id}
+            <if test="gid!=null">
+                and u.gid = #{gid}
             </if>
             <if test="hashId!=null">
                 and u.hash_id = #{hashId}

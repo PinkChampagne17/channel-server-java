@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 public class User {
     @JsonIgnore
-    private Long id;
+    private Long gid;
 
     @JsonProperty("id")
     private String hashId;

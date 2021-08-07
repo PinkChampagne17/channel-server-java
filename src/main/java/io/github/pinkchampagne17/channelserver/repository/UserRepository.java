@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 @Repository
 public interface UserRepository {
-    User getUserById(Long id);
+    User getUserById(Long gid);
     List<User> getUsers(GetUsersParameters parameters);
     int createGidAndUsername(CreateUserParameters parameters);
     int createUserByGid(CreateUserParameters parameters);

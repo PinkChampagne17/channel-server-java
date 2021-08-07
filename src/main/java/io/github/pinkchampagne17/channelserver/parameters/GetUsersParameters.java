@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class GetUsersParameters {
-    private Long id;
+    private Long gid;
     private String hashId;
     private String username;
     private String email;
