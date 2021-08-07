@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class PingController {
 
     @GetMapping
-    public ResponseEntity<Object> Ping() {
+    public ResponseEntity<Object> Ping() throws Exception {
 
         var res = new Object() {
-            public String message = "pong";
+            public final String message = "pong";
         };
 
         return ResponseEntity.ok(res);

@@ -9,7 +9,7 @@ public class HashId {
         return hashids.encode(id);
     }
 
-    public static Long encodeOne(String hashId) {
+    public static Long decodeOne(String hashId) {
         return hashids.decode(hashId)[0];
     }
 }

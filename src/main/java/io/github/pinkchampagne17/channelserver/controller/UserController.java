@@ -20,8 +20,8 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        var user = this.userService.getUserById(id);
+    public ResponseEntity<User> getUserById(@PathVariable @Valid String id) {
+        var user = this.userService.getUserByHashId(id);
 
         if (user == null) {
             return ResponseEntity.notFound().build();

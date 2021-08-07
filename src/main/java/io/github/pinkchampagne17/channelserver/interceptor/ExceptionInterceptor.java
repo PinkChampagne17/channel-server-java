@@ -1,19 +1,21 @@
 package io.github.pinkchampagne17.channelserver.interceptor;
 
 import io.github.pinkchampagne17.channelserver.entity.ErrorResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.servlet.http.HttpServletRequest;
+
+@Slf4j
 @RestControllerAdvice
 public class ExceptionInterceptor {
 
-
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> ExceptionHandler(Exception e) {
-        var messages = e.getMessage();
-        System.out.printf("ExceptionHandler: %s\n", messages);
+    public ResponseEntity<ErrorResponse> ExceptionHandler(HttpServletRequest request, Exception e) {
+        log.error(e.getMessage());
         return ResponseEntity.internalServerError().build();
     }
 
@@ -25,7 +27,5 @@ public class ExceptionInterceptor {
         );
         return ResponseEntity.badRequest().body(errorResponse);
     }
-
-
 
 }

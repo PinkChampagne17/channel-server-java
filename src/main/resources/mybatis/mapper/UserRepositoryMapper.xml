@@ -4,23 +4,68 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="io.github.pinkchampagne17.channelserver.repository.UserRepository">
     <resultMap id="userMap" type="io.github.pinkchampagne17.channelserver.entity.User">
-        <id column="gid" property="id"></id>
-        <result column="hash_id" property="hashId"></result>
-        <result column="photo_md5" property="photoMd5"></result>
-        <result column="is_online" property="isOnline"></result>
-        <result column="create_at" property="createAt"></result>
-        <result column="update_at" property="updateAt"></result>
+        <id column="gid" property="id"/>
+        <result column="hash_id" property="hashId"/>
+        <result column="photo_md5" property="photoMd5"/>
+        <result column="is_online" property="isOnline"/>
+        <result column="create_at" property="createAt"/>
+        <result column="update_at" property="updateAt"/>
     </resultMap>
-    <select id="getUserById" resultType="io.github.pinkchampagne17.channelserver.entity.User" resultMap="userMap" parameterType="java.lang.Long">
-        select u.gid, u.hash_id, u.email, u.name, u.bio, u.photo_md5, u.is_online, g.create_at, g.update_at, g.username
+    <select
+            id="getUserById"
+            resultType="io.github.pinkchampagne17.channelserver.entity.User"
+            resultMap="userMap"
+            parameterType="java.lang.Long"
+    >
+        select u.gid, u.hash_id, u.email, u.password, u.name, u.bio, u.photo_md5, u.is_online, g.create_at, g.update_at, g.username
         from `user` u join `gid` g on u.gid = g.gid
         where u.gid = #{id}
         limit 1
     </select>
-    <insert id="createGidAndUsername" useGeneratedKeys="true" keyProperty="gid" parameterType="io.github.pinkchampagne17.channelserver.parameters.CreateUserParameters">
+    <select
+            id="getUsers"
+            resultType="io.github.pinkchampagne17.channelserver.entity.User"
+            resultMap="userMap"
+            parameterType="io.github.pinkchampagne17.channelserver.parameters.GetUsersParameters"
+    >
+        select u.gid, u.hash_id, u.email, u.password, u.name, u.bio, u.photo_md5, u.is_online, g.create_at, g.update_at, g.username
+        from `user` u join `gid` g on u.gid = g.gid
+        <where>
+            <if test="id!=null">
+                and u.gid = #{id}
+            </if>
+            <if test="hashId!=null">
+                and u.hash_id = #{hashId}
+            </if>
+            <if test="username!=null">
+                and g.username = #{username}
+            </if>
+            <if test="email!=null">
+                and u.email = #{email}
+            </if>
+            <if test="username!=null">
+                and u.username = #{username}
+            </if>
+            <if test="password!=null">
+                and u.password = #{password}
+            </if>
+        </where>
+        <if test="count!=null">
+            limit #{count}
+        </if>
+    </select>
+    <insert
+            id="createGidAndUsername"
+            parameterType="io.github.pinkchampagne17.channelserver.parameters.CreateUserParameters"
+            useGeneratedKeys="true"
+            keyProperty="gid"
+    >
         insert into gid(username) values(#{username})
     </insert>
-    <insert id="createUserByGid" parameterType="io.github.pinkchampagne17.channelserver.parameters.CreateUserParameters">
+    <insert
+            id="createUserByGid"
+            parameterType="io.github.pinkchampagne17.channelserver.parameters.CreateUserParameters"
+    >
         insert into `user`(gid, email, password, name, hash_id)
         values(#{gid}, #{email}, #{password}, #{name}, #{hashId})
     </insert>
