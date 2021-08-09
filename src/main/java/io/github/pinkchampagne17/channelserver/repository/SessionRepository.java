@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SessionRepository {
     int createSession(Session session);
+    Session getSession(String session);
 }

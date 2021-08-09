@@ -24,6 +24,15 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PlatformTransactionManager transactionManager;
 
+    @Override
+    public User getUserByGid(Long gid) {
+        var parameters = new GetUsersParameters() {{
+            setGid(gid);
+        }};
+        return getUser(parameters);
+    }
+
+    @Override
     public User getUserByHashId(String hashId) {
         var parameters = new GetUsersParameters() {{
             setHashId(hashId);

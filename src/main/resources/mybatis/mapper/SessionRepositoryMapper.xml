@@ -10,4 +10,13 @@
         insert into session(session, gid, expires, client, device)
         values(#{session}, #{gid}, #{expires}, #{client}, #{device})
     </insert>
+    <select id="getSession"
+            parameterType="java.lang.String"
+            resultType="io.github.pinkchampagne17.channelserver.entity.Session"
+    >
+        select session, expires, client, device, u.gid, u.hash_id as hashId
+        from session s join user u on s.gid = u.gid
+        where s.session = #{session}
+        limit 1
+    </select>
 </mapper>

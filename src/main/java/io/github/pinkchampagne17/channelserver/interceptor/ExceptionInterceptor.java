@@ -82,4 +82,13 @@ public class ExceptionInterceptor {
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
+    @ExceptionHandler(SessionExpiredOrNotExistsException.class)
+    public ResponseEntity<ErrorResponse> SessionExpiredOrNotExistsExceptionHandler(SessionExpiredOrNotExistsException e) {
+        var errorResponse = new ErrorResponse(
+                1006,
+                "This session is expired or not exists."
+        );
+        return ResponseEntity.badRequest().body(errorResponse);
+    }
+
 }

@@ -5,7 +5,8 @@ import io.github.pinkchampagne17.channelserver.parameters.CreateUserParameters;
 import io.github.pinkchampagne17.channelserver.parameters.GetUsersParameters;
 
 public interface UserService {
-    User getUserByHashId(String id);
     User getUser(GetUsersParameters parameters);
+    User getUserByGid(Long gid);
+    User getUserByHashId(String id);
     User createUser(CreateUserParameters parameters) throws Exception;
 }
