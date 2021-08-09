@@ -6,11 +6,11 @@ import io.github.pinkchampagne17.channelserver.parameters.CreateUserParameters;
 import io.github.pinkchampagne17.channelserver.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Slf4j
@@ -34,6 +34,12 @@ public class UserController {
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/myself")
+    public ResponseEntity<User> getMyself(HttpServletRequest request) {
+        var user = (User)request.getAttribute("user");
         return ResponseEntity.ok(user);
     }
 
