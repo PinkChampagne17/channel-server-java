@@ -1,10 +1,7 @@
 package io.github.pinkchampagne17.channelserver.interceptor;
 
 import io.github.pinkchampagne17.channelserver.entity.ErrorResponse;
-import io.github.pinkchampagne17.channelserver.exception.EmailNotExistsException;
-import io.github.pinkchampagne17.channelserver.exception.ParameterInvalidException;
-import io.github.pinkchampagne17.channelserver.exception.PasswordIncorrectException;
-import io.github.pinkchampagne17.channelserver.exception.UsernameNotExistsException;
+import io.github.pinkchampagne17.channelserver.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -49,15 +46,40 @@ public class ExceptionInterceptor {
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
-    @ExceptionHandler(PasswordIncorrectException.class)
-    public ResponseEntity<ErrorResponse> PasswordIncorrectExceptionHandler(PasswordIncorrectException e) {
+    @ExceptionHandler(UsernameOrEmailExistsException.class)
+    public ResponseEntity<ErrorResponse> UsernameOrEmailExistsExceptionHandler(UsernameOrEmailExistsException e) {
         var errorResponse = new ErrorResponse(
                 1003,
-                "This password is incorrect."
+                "This username or email is already taken."
         );
         return ResponseEntity.badRequest().body(errorResponse);
     }
 
+    @ExceptionHandler(UsernameExistsException.class)
+    public ResponseEntity<ErrorResponse> UsernameExistsExceptionHandler(UsernameExistsException e) {
+        var errorResponse = new ErrorResponse(
+                1003,
+                "This username is already taken."
+        );
+        return ResponseEntity.badRequest().body(errorResponse);
+    }
 
+    @ExceptionHandler(EmailExistsException.class)
+    public ResponseEntity<ErrorResponse> EmailExistsExceptionHandler(EmailExistsException e) {
+        var errorResponse = new ErrorResponse(
+                1004,
+                "This email is already taken."
+        );
+        return ResponseEntity.badRequest().body(errorResponse);
+    }
+
+    @ExceptionHandler(PasswordIncorrectException.class)
+    public ResponseEntity<ErrorResponse> PasswordIncorrectExceptionHandler(PasswordIncorrectException e) {
+        var errorResponse = new ErrorResponse(
+                1005,
+                "This password is incorrect."
+        );
+        return ResponseEntity.badRequest().body(errorResponse);
+    }
 
 }

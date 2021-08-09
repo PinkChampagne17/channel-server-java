@@ -31,19 +31,19 @@
         from `user` u join `gid` g on u.gid = g.gid
         <where>
             <if test="gid!=null">
-                and u.gid = #{gid}
+                or u.gid = #{gid}
             </if>
             <if test="hashId!=null">
-                and u.hash_id = #{hashId}
+                or u.hash_id = #{hashId}
             </if>
             <if test="username!=null">
-                and g.username = #{username}
+                or g.username = #{username}
             </if>
             <if test="email!=null">
-                and u.email = #{email}
+                or u.email = #{email}
             </if>
             <if test="password!=null">
-                and u.password = #{password}
+                or u.password = #{password}
             </if>
         </where>
         <if test="count!=null">

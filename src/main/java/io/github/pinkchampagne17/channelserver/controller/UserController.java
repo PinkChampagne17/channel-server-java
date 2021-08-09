@@ -4,16 +4,16 @@ import io.github.pinkchampagne17.channelserver.entity.User;
 import io.github.pinkchampagne17.channelserver.exception.ParameterInvalidException;
 import io.github.pinkchampagne17.channelserver.parameters.CreateUserParameters;
 import io.github.pinkchampagne17.channelserver.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
 
+@Slf4j
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -22,7 +22,13 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{hashId}")
-    public ResponseEntity<User> getUserByHashId(@PathVariable String hashId) {
+    public ResponseEntity<User> getUserByHashId(@PathVariable String hashId)
+            throws ParameterInvalidException {
+
+        if (hashId.length() > 320) {
+            throw new ParameterInvalidException("The parameter is too large.");
+        }
+
         var user = this.userService.getUserByHashId(hashId);
 
         if (user == null) {
@@ -40,16 +46,8 @@ public class UserController {
             throw new ParameterInvalidException(bindingResult);
         }
 
-        try {
-            var user = this.userService.createUser(parameters);
-            return ResponseEntity.ok(user);
-        } catch (Exception e) {
-            if (e instanceof DuplicateKeyException) {
-                throw new ParameterInvalidException("This username or email is already taken.");
-            } else {
-                throw e;
-            }
-        }
+        var user = this.userService.createUser(parameters);
+        return ResponseEntity.ok(user);
     }
 
 }
