@@ -2,6 +2,7 @@ package io.github.pinkchampagne17.channelserver.interceptor;
 
 import io.github.pinkchampagne17.channelserver.exception.ParameterInvalidException;
 import io.github.pinkchampagne17.channelserver.exception.SessionExpiredOrNotExistsException;
+import io.github.pinkchampagne17.channelserver.exception.UnauthorizedException;
 import io.github.pinkchampagne17.channelserver.repository.SessionRepository;
 import io.github.pinkchampagne17.channelserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,10 @@ public class SessionInterceptor implements HandlerInterceptor {
 
         var authorization = request.getHeader("Authorization");
         if (authorization == null) {
-            throw new ParameterInvalidException("Header Authorization is needed.");
+            throw new UnauthorizedException();
         }
-        if (!authorization.startsWith("basic ") && authorization.length() <= 6) {
+
+        if (!authorization.startsWith("basic ") || authorization.length() <= "basic ".length()) {
             throw new ParameterInvalidException("The format of authorization is invalid");
         }
 

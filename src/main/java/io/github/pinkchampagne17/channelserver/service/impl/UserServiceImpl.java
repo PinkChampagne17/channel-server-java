@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
             transactionManager.rollback(txStatus);
 
             if (e instanceof DuplicateKeyException) {
-                throw new UsernameOrEmailExistsException(e);
+                throw new UsernameOrEmailExistsException();
             }
 
             throw e;

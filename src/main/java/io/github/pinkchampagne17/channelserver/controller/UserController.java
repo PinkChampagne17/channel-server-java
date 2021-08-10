@@ -4,7 +4,6 @@ import io.github.pinkchampagne17.channelserver.entity.User;
 import io.github.pinkchampagne17.channelserver.exception.ParameterInvalidException;
 import io.github.pinkchampagne17.channelserver.parameters.CreateUserParameters;
 import io.github.pinkchampagne17.channelserver.service.UserService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-@Slf4j
 @RestController
 @RequestMapping("/users")
 public class UserController {
