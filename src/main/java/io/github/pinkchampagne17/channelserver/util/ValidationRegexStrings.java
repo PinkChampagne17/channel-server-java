@@ -1,6 +1,6 @@
 package io.github.pinkchampagne17.channelserver.util;
 
-public class RegexStrings {
+public class ValidationRegexStrings {
     // Printable ASCII, length between 6 and 32
     public static final String PASSWORD = "^[\\x20-\\x7E]{6,32}$";
 

@@ -1,13 +1,12 @@
 package io.github.pinkchampagne17.channelserver.exception;
 
-import io.github.pinkchampagne17.channelserver.entity.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ParameterInvalidException extends ErrorResponse {
+public class ParameterInvalidException extends HttpException {
     private final List<String> allErrorMessages;
 
     public ParameterInvalidException(List<String> messages) {

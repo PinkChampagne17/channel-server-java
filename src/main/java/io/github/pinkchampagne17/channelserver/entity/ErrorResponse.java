@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import java.util.List;
 
 @Data
-public class ErrorResponse extends RuntimeException {
+public class ErrorResponse {
 
     private String traceId;
     private HttpStatus httpStatus;
@@ -20,16 +20,11 @@ public class ErrorResponse extends RuntimeException {
         this.messages = messages;
     }
 
-    public ErrorResponse(HttpStatus httpStatus, ErrorCode code, String message) {
-        this(httpStatus, code, List.of(message));
+    public int getHttpStatus() {
+        return this.httpStatus.value();
     }
 
-    public ErrorResponse(HttpStatus httpStatus, String message) {
-        this(httpStatus, ErrorCode.EQUALS_HTTP_STATUS, List.of(message));
+    public int getCode() {
+        return this.code.getValue();
     }
-
-    public ErrorResponse(HttpStatus httpStatus, ErrorCode code) {
-        this(httpStatus, code, code.toString());
-    }
-
 }

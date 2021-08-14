@@ -13,12 +13,16 @@ public enum ErrorCode {
     SESSION_EXPIRED_OR_NOT_EXISTS(1009, "This session is expired or not exists."),
     EQUALS_HTTP_STATUS(1010, "The http status code of this response means what us want to tell you.");
 
-    public final int code;
+    public final int value;
     private final String message;
 
-    ErrorCode(int code, String message) {
-        this.code = code;
+    ErrorCode(int value, String message) {
+        this.value = value;
         this.message = message;
+    }
+
+    public int getValue() {
+        return value;
     }
 
     @Override

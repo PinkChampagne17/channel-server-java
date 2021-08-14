@@ -1,6 +1,6 @@
 package io.github.pinkchampagne17.channelserver.parameters;
 
-import io.github.pinkchampagne17.channelserver.util.RegexStrings;
+import io.github.pinkchampagne17.channelserver.util.ValidationRegexStrings;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
@@ -19,12 +19,12 @@ public class CreateUserParameters {
     @Email
     private String email;
 
-    @Pattern(regexp = RegexStrings.USERNAME)
+    @Pattern(regexp = ValidationRegexStrings.USERNAME)
     private String username;
 
     @Size(min = 1, max = 32)
     private String name;
 
-    @Pattern(regexp = RegexStrings.PASSWORD)
+    @Pattern(regexp = ValidationRegexStrings.PASSWORD)
     private String password;
 }

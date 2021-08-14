@@ -1,7 +1,7 @@
 package io.github.pinkchampagne17.channelserver.parameters;
 
 import io.github.pinkchampagne17.channelserver.entity.Session;
-import io.github.pinkchampagne17.channelserver.util.RegexStrings;
+import io.github.pinkchampagne17.channelserver.util.ValidationRegexStrings;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
@@ -16,7 +16,7 @@ public class CreateSessionParameters {
     private String usernameOrEmail;
 
     @NotNull
-    @Pattern(regexp = RegexStrings.PASSWORD)
+    @Pattern(regexp = ValidationRegexStrings.PASSWORD)
     private String password;
 
     @NotNull
@@ -24,7 +24,7 @@ public class CreateSessionParameters {
     private String client;
 
     @NotNull
-    @Size(min = 1, max = 32)
+    @Size(min = 1, max = 256)
     private String device;
 
     public Session asSession() {
