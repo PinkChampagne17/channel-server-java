@@ -15,4 +15,13 @@
         where applicant_gid = #{gid} or target_gid = #{gid}
     </select>
 
+    <insert
+            id="createOrUpdateRequest"
+            parameterType="io.github.pinkchampagne17.channelserver.parameters.CreateRequestParameters"
+    >
+        insert into request(applicant_gid, target_gid, reason)
+        values(#{applicantGid}, #{targetGid}, #{reason})
+        on duplicate key update reason=#{reason}, status=0
+    </insert>
+
 </mapper>

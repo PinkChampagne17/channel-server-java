@@ -3,7 +3,6 @@ package io.github.pinkchampagne17.channelserver.interceptor;
 import io.github.pinkchampagne17.channelserver.exception.ParameterInvalidException;
 import io.github.pinkchampagne17.channelserver.exception.SessionExpiredOrNotExistsException;
 import io.github.pinkchampagne17.channelserver.exception.UnauthorizedException;
-import io.github.pinkchampagne17.channelserver.repository.SessionRepository;
 import io.github.pinkchampagne17.channelserver.service.SessionService;
 import io.github.pinkchampagne17.channelserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

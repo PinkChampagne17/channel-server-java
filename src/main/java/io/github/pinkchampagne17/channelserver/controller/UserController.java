@@ -33,7 +33,7 @@ public class UserController {
 
     @GetMapping("/myself")
     public ResponseEntity<User> getMyself(HttpServletRequest request) {
-        var user = (User)request.getAttribute("user");
+        var user = userService.getCurrentUser(request);
         return ResponseEntity.ok(user);
     }
 

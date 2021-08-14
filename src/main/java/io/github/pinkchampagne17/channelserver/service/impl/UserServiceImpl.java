@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -103,6 +105,11 @@ public class UserServiceImpl implements UserService {
 
             throw e;
         }
+    }
+
+    @Override
+    public User getCurrentUser(HttpServletRequest request) {
+        return (User)request.getAttribute("user");
     }
 
 }
