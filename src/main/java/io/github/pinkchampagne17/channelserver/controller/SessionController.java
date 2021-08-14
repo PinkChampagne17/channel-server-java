@@ -1,6 +1,6 @@
 package io.github.pinkchampagne17.channelserver.controller;
 
-import io.github.pinkchampagne17.channelserver.dto.SessionDTO;
+import io.github.pinkchampagne17.channelserver.entity.Session;
 import io.github.pinkchampagne17.channelserver.exception.ParameterInvalidException;
 import io.github.pinkchampagne17.channelserver.parameters.CreateSessionParameters;
 import io.github.pinkchampagne17.channelserver.service.SessionService;
@@ -19,7 +19,7 @@ public class SessionController {
     SessionService sessionService;
 
     @PostMapping()
-    public ResponseEntity<SessionDTO> createSession(
+    public ResponseEntity<Session> createSession(
             @RequestBody @Valid CreateSessionParameters parameters,
             BindingResult bindingResult
     ) {
@@ -27,8 +27,8 @@ public class SessionController {
             throw new ParameterInvalidException(bindingResult);
         }
 
-        var session = sessionService.CreateSession(parameters);
-        return ResponseEntity.ok(session.asSessionDTO());
+        var session = sessionService.createSession(parameters);
+        return ResponseEntity.ok(session);
     }
 
 }

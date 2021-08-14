@@ -4,6 +4,7 @@ import io.github.pinkchampagne17.channelserver.exception.ParameterInvalidExcepti
 import io.github.pinkchampagne17.channelserver.exception.SessionExpiredOrNotExistsException;
 import io.github.pinkchampagne17.channelserver.exception.UnauthorizedException;
 import io.github.pinkchampagne17.channelserver.repository.SessionRepository;
+import io.github.pinkchampagne17.channelserver.service.SessionService;
 import io.github.pinkchampagne17.channelserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 public class SessionInterceptor implements HandlerInterceptor {
 
     @Autowired
-    private SessionRepository sessionRepository;
+    private SessionService sessionService;
 
     @Autowired
     private UserService userService;
@@ -34,7 +35,7 @@ public class SessionInterceptor implements HandlerInterceptor {
         }
 
         var sessionStr = authorization.split("basic ")[1];
-        var session = sessionRepository.getSession(sessionStr);
+        var session = sessionService.getSession(sessionStr);
         if (session == null) {
             throw new SessionExpiredOrNotExistsException();
         }

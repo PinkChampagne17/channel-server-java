@@ -1,9 +1,7 @@
 package io.github.pinkchampagne17.channelserver.parameters;
 
-import io.github.pinkchampagne17.channelserver.entity.Session;
 import io.github.pinkchampagne17.channelserver.util.ValidationRegexStrings;
 import lombok.Data;
-import org.springframework.beans.BeanUtils;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -27,9 +25,4 @@ public class CreateSessionParameters {
     @Size(min = 1, max = 256)
     private String device;
 
-    public Session asSession() {
-        var session = new Session();
-        BeanUtils.copyProperties(this, session);
-        return session;
-    }
 }

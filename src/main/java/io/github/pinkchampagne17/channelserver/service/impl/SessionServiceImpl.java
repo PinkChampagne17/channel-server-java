@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
@@ -27,7 +26,7 @@ public class SessionServiceImpl implements SessionService {
     private SessionRepository sessionRepository;
 
     @Override
-    public Session CreateSession(CreateSessionParameters parameters) {
+    public Session createSession(CreateSessionParameters parameters) {
         var condition = new GetUsersParameters();
 
         var isEmail = parameters.getUsernameOrEmail().contains("@");
@@ -60,5 +59,10 @@ public class SessionServiceImpl implements SessionService {
         sessionRepository.createSession(session);
 
         return session;
+    }
+
+    @Override
+    public Session getSession(String session) {
+        return sessionRepository.getSession(session);
     }
 }

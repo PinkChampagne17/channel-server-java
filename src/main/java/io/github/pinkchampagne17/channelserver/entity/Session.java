@@ -1,18 +1,20 @@
 package io.github.pinkchampagne17.channelserver.entity;
 
-import io.github.pinkchampagne17.channelserver.dto.SessionDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
 
 @Data
-public class Session extends SessionBase{
-    private LocalDateTime expires;
+public class Session {
+    @JsonIgnore
+    private Long gid;
 
-    public SessionDTO asSessionDTO() {
-        var dto = new SessionDTO();
-        BeanUtils.copyProperties(this, dto);
-        return dto;
-    }
+    @JsonIgnore
+    private String hashId;
+
+    private String client;
+    private String device;
+    private String session;
+    private LocalDateTime expires;
 }
