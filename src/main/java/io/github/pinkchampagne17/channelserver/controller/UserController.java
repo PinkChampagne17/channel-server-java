@@ -23,10 +23,6 @@ public class UserController {
     public ResponseEntity<User> getUserByHashId(@PathVariable String hashId)
             throws ParameterInvalidException {
 
-        if (hashId.length() > 320) {
-            throw new ParameterInvalidException("The parameter is too large.");
-        }
-
         var user = this.userService.getUserByHashId(hashId);
 
         if (user == null) {
