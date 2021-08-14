@@ -15,6 +15,16 @@
         where applicant_gid = #{gid} or target_gid = #{gid}
     </select>
 
+    <select
+            id="getRequestsByApplicantGidAndTargetGid"
+            resultType="io.github.pinkchampagne17.channelserver.entity.Request"
+            parameterType="java.lang.Long"
+    >
+        select *
+        from request
+        where applicant_gid = #{applicantGid} or target_gid = #{targetGid}
+    </select>
+
     <insert
             id="createOrUpdateRequest"
             parameterType="io.github.pinkchampagne17.channelserver.parameters.CreateRequestParameters"
@@ -23,5 +33,14 @@
         values(#{applicantGid}, #{targetGid}, #{reason})
         on duplicate key update reason=#{reason}, status=0
     </insert>
+
+    <update
+            id="updateStatus"
+            parameterType="io.github.pinkchampagne17.channelserver.parameters.UpdateRequestStatusParameters"
+    >
+        update request
+        set status = #{status}
+        where applicant_gid = #{applicantGid} and target_gid = #{targetGid}
+    </update>
 
 </mapper>

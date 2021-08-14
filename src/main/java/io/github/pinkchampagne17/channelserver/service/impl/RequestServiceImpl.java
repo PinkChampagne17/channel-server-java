@@ -1,9 +1,12 @@
 package io.github.pinkchampagne17.channelserver.service.impl;
 
 import io.github.pinkchampagne17.channelserver.entity.Request;
+import io.github.pinkchampagne17.channelserver.entity.RequestStatus;
 import io.github.pinkchampagne17.channelserver.exception.ParameterInvalidException;
 import io.github.pinkchampagne17.channelserver.parameters.CreateRequestParameters;
+import io.github.pinkchampagne17.channelserver.parameters.UpdateRequestStatusParameters;
 import io.github.pinkchampagne17.channelserver.repository.RequestRepository;
+import io.github.pinkchampagne17.channelserver.service.FriendService;
 import io.github.pinkchampagne17.channelserver.service.RequestService;
 import io.github.pinkchampagne17.channelserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,23 +21,43 @@ public class RequestServiceImpl implements RequestService {
     private UserService userService;
 
     @Autowired
+    private FriendService friendService;
+
+    @Autowired
     private RequestRepository requestRepository;
 
     @Override
     public List<Request> getRequestsByGid(Long gid) {
-        return requestRepository.getRequestsByGid(gid);
+        return this.requestRepository.getRequestsByGid(gid);
+    }
+
+    @Override
+    public Request getRequestsByApplicantGidAndTargetGid(Long applicantGid, Long targetGid) {
+        return this.requestRepository.getRequestsByApplicantGidAndTargetGid(applicantGid, targetGid);
     }
 
     @Override
     public void createOrUpdateRequest(CreateRequestParameters parameters) {
-        var targetUser = userService.getUserByHashId(parameters.getTargetHashId());
-        if (targetUser == null) {
-            throw new ParameterInvalidException("The target user not exists.");
+        // (NOT IMPLEMENTED) If the request already exists and got ACCEPTED, throw an exception.
+        this.requestRepository.createOrUpdateRequest(parameters);
+    }
+
+    @Override
+    public void updateStatus(UpdateRequestStatusParameters parameters) {
+        var request = this.getRequestsByApplicantGidAndTargetGid(
+                parameters.getApplicantGid(),
+                parameters.getTargetGid()
+        );
+        if (request == null) {
+            throw new ParameterInvalidException("The Request not exists.");
         }
 
-        parameters.setTargetGid(targetUser.getGid());
+        this.requestRepository.updateStatus(parameters);
 
-        requestRepository.createOrUpdateRequest(parameters);
+        if (parameters.getStatus() == RequestStatus.ACCEPTED) {
+            this.friendService.createFriendship(parameters.getApplicantGid(), parameters.getTargetGid());
+        }
     }
+
 
 }

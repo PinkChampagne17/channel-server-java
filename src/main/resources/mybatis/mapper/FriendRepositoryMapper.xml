@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.pinkchampagne17.channelserver.repository.FriendRepository">
+
+    <insert
+            id="createFriendship"
+            parameterType="java.lang.Long"
+    >
+        INSERT into friend(gid, friend_gid)
+        values(#{gid}, #{friendGid})
+    </insert>
+
+</mapper>
