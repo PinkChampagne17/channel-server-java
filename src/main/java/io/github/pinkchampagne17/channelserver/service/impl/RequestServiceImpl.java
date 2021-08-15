@@ -38,7 +38,11 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public void createOrUpdateRequest(CreateRequestParameters parameters) {
-        // (NOT IMPLEMENTED) If the request already exists and got ACCEPTED, throw an exception.
+        var areTheyFriend = this.friendshipService.AreTheyFriend(parameters.getApplicantGid(), parameters.getTargetGid());
+        if (areTheyFriend) {
+            throw new ParameterInvalidException("You are already friends.");
+        }
+
         this.requestRepository.createOrUpdateRequest(parameters);
     }
 

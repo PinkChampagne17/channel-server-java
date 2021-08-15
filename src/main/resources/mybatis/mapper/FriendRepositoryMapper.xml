@@ -12,4 +12,14 @@
         values(#{gid}, #{friendGid})
     </insert>
 
+    <select
+            id="getFriendship"
+            parameterType="java.lang.Long"
+            resultType="io.github.pinkchampagne17.channelserver.entity.Friendship"
+    >
+        select *
+        from friendship
+        where gid = #{gid} and friend_gid = #{friendGid}
+    </select>
+
 </mapper>
