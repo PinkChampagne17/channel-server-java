@@ -4,6 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="io.github.pinkchampagne17.channelserver.repository.FriendshipRepository">
 
+<!--    <resultMap id="friendshipMap" type="io.github.pinkchampagne17.channelserver.entity.Friendship">-->
+<!--        <result column="create_at" property="createAt"/>-->
+<!--    </resultMap>-->
+
+<!--    The code above do not works    -->
+
     <insert
             id="createFriendship"
             parameterType="java.lang.Long"
@@ -13,13 +19,24 @@
     </insert>
 
     <select
-            id="getFriendship"
+            id="getFriendshipByGidAndFriendGid"
             parameterType="java.lang.Long"
             resultType="io.github.pinkchampagne17.channelserver.entity.Friendship"
     >
-        select *
+        select gid, friend_gid as friendGid, create_at as createAt
         from friendship
         where gid = #{gid} and friend_gid = #{friendGid}
+        limit 1
+    </select>
+
+    <select
+            id="getFriendshipsByGid"
+            parameterType="java.lang.Long"
+            resultType="io.github.pinkchampagne17.channelserver.entity.Friendship"
+    >
+        select gid, friend_gid as friendGid, create_at as createAt
+        from friendship
+        where gid = #{gid}
     </select>
 
 </mapper>

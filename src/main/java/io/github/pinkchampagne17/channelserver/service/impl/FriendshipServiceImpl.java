@@ -6,6 +6,8 @@ import io.github.pinkchampagne17.channelserver.service.FriendshipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FriendshipServiceImpl implements FriendshipService {
 
@@ -20,8 +22,13 @@ public class FriendshipServiceImpl implements FriendshipService {
 
     @Override
     public boolean AreTheyFriend(Long gid, Long friendGid) {
-        var friendship = this.friendshipRepository.getFriendship(gid, friendGid);
+        var friendship = this.friendshipRepository.getFriendshipByGidAndFriendGid(gid, friendGid);
         return friendship != null;
+    }
+
+    @Override
+    public List<Friendship> getFriendships(Long gid) {
+        return this.friendshipRepository.getFriendshipsByGid(gid);
     }
 
 }
