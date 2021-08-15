@@ -6,7 +6,7 @@ import io.github.pinkchampagne17.channelserver.exception.ParameterInvalidExcepti
 import io.github.pinkchampagne17.channelserver.parameters.CreateRequestParameters;
 import io.github.pinkchampagne17.channelserver.parameters.UpdateRequestStatusParameters;
 import io.github.pinkchampagne17.channelserver.repository.RequestRepository;
-import io.github.pinkchampagne17.channelserver.service.FriendService;
+import io.github.pinkchampagne17.channelserver.service.FriendshipService;
 import io.github.pinkchampagne17.channelserver.service.RequestService;
 import io.github.pinkchampagne17.channelserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class RequestServiceImpl implements RequestService {
     private UserService userService;
 
     @Autowired
-    private FriendService friendService;
+    private FriendshipService friendshipService;
 
     @Autowired
     private RequestRepository requestRepository;
@@ -55,7 +55,7 @@ public class RequestServiceImpl implements RequestService {
         this.requestRepository.updateStatus(parameters);
 
         if (parameters.getStatus() == RequestStatus.ACCEPTED) {
-            this.friendService.createFriendship(parameters.getApplicantGid(), parameters.getTargetGid());
+            this.friendshipService.createFriendship(parameters.getApplicantGid(), parameters.getTargetGid());
         }
     }
 

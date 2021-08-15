@@ -1,5 +1,5 @@
 package io.github.pinkchampagne17.channelserver.service;
 
-public interface FriendService {
+public interface FriendshipService {
     void createFriendship(Long gid, Long friendGid);
 }
