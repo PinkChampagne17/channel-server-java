@@ -33,7 +33,7 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public Request getRequestsByApplicantGidAndTargetGid(Long applicantGid, Long targetGid) {
-        return this.requestRepository.getRequestsByApplicantGidAndTargetGid(applicantGid, targetGid);
+        return this.requestRepository.getRequestByGid(applicantGid, targetGid);
     }
 
     @Override

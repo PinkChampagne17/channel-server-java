@@ -7,7 +7,6 @@ import io.github.pinkchampagne17.channelserver.parameters.CreateRequestParameter
 import io.github.pinkchampagne17.channelserver.parameters.UpdateRequestStatusParameters;
 import io.github.pinkchampagne17.channelserver.service.RequestService;
 import io.github.pinkchampagne17.channelserver.service.UserService;
-import io.github.pinkchampagne17.channelserver.util.HashId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

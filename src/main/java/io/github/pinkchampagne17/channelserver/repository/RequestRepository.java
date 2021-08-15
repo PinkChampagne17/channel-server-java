@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface RequestRepository {
     List<Request> getRequestsByGid(Long gid);
-    Request getRequestsByApplicantGidAndTargetGid(Long applicantGid, Long targetGid);
+    Request getRequestByGid(Long applicantGid, Long targetGid);
     int createOrUpdateRequest(CreateRequestParameters parameters);
     int updateStatus(UpdateRequestStatusParameters parameters);
 }
