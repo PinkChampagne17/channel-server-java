@@ -4,7 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="io.github.pinkchampagne17.channelserver.repository.RequestRepository">
 
-
     <select
             id="getRequestsByGid"
             resultType="io.github.pinkchampagne17.channelserver.entity.Request"
@@ -42,5 +41,10 @@
         set status = #{status}
         where applicant_gid = #{applicantGid} and target_gid = #{targetGid}
     </update>
+
+    <delete id="removeRequest" parameterType="java.lang.Long">
+        delete from request
+        where (applicant_gid=#{gid} and target_gid=#{anotherGid}) or (applicant_gid=#{anotherGid} and target_gid=#{gid})
+    </delete>
 
 </mapper>

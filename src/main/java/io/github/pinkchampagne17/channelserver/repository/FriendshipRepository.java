@@ -12,4 +12,5 @@ public interface FriendshipRepository {
     int createFriendship(Long gid, Long friendGid);
     Friendship getFriendshipByGidAndFriendGid(Long gid, Long friendGid);
     List<Friendship> getFriendshipsByGid(Long gid);
+    int removeFriendship(Long gid, Long friendGid);
 }

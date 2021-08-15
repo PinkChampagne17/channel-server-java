@@ -15,7 +15,8 @@
             parameterType="java.lang.Long"
     >
         INSERT into friendship(gid, friend_gid)
-        values(#{gid}, #{friendGid})
+        values(#{gid}, #{friendGid}),
+        values(#{friendGid}, #{gid})
     </insert>
 
     <select
@@ -38,5 +39,10 @@
         from friendship
         where gid = #{gid}
     </select>
+
+    <delete id="removeFriendship" parameterType="java.lang.Long">
+        delete from friendship
+        where (gid=#{gid} and friend_gid=#{friendGid}) or (gid=#{friendGid} and friend_gid=#{gid})
+    </delete>
 
 </mapper>

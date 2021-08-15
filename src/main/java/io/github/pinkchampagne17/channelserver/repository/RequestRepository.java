@@ -15,4 +15,5 @@ public interface RequestRepository {
     Request getRequestByGid(Long applicantGid, Long targetGid);
     int createOrUpdateRequest(CreateRequestParameters parameters);
     int updateStatus(UpdateRequestStatusParameters parameters);
+    int removeRequest(Long gid, Long anotherGid);
 }
