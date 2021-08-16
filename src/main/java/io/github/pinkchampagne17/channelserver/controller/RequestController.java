@@ -3,8 +3,8 @@ package io.github.pinkchampagne17.channelserver.controller;
 import io.github.pinkchampagne17.channelserver.entity.Request;
 import io.github.pinkchampagne17.channelserver.entity.RequestStatus;
 import io.github.pinkchampagne17.channelserver.exception.ParameterInvalidException;
-import io.github.pinkchampagne17.channelserver.parameters.CreateRequestParameters;
-import io.github.pinkchampagne17.channelserver.parameters.UpdateRequestStatusParameters;
+import io.github.pinkchampagne17.channelserver.parameters.RequestCreateParameters;
+import io.github.pinkchampagne17.channelserver.parameters.RequestStatusUpdateParameters;
 import io.github.pinkchampagne17.channelserver.service.RequestService;
 import io.github.pinkchampagne17.channelserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class RequestController {
 
     @PutMapping("/requests")
     public ResponseEntity<?> createOrUpdateRequest(
-            @RequestBody @Valid CreateRequestParameters parameters,
+            @RequestBody @Valid RequestCreateParameters parameters,
             BindingResult bindingResult,
             HttpServletRequest servletRequest
     ) {
@@ -69,7 +69,7 @@ public class RequestController {
             HttpServletRequest servletRequest,
             @PathVariable(name = "hashId") String HashId,
             @PathVariable(name = "applicantHashId") String applicantHashId,
-            @RequestBody @Valid UpdateRequestStatusParameters parameters,
+            @RequestBody @Valid RequestStatusUpdateParameters parameters,
             BindingResult bindingResult
     ) {
         if (bindingResult.hasErrors()) {

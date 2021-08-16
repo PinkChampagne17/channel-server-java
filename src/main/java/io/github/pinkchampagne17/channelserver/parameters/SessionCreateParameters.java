@@ -8,7 +8,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Data
-public class CreateSessionParameters {
+public class SessionCreateParameters {
     @NotNull
     @Size(min = 1, max = 320)
     private String usernameOrEmail;

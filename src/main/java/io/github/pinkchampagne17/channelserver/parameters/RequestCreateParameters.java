@@ -8,7 +8,7 @@ import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
 @Data
-public class CreateRequestParameters {
+public class RequestCreateParameters {
 
     @Null
     private Long applicantGid;

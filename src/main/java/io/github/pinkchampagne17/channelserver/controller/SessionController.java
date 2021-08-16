@@ -2,7 +2,7 @@ package io.github.pinkchampagne17.channelserver.controller;
 
 import io.github.pinkchampagne17.channelserver.entity.Session;
 import io.github.pinkchampagne17.channelserver.exception.ParameterInvalidException;
-import io.github.pinkchampagne17.channelserver.parameters.CreateSessionParameters;
+import io.github.pinkchampagne17.channelserver.parameters.SessionCreateParameters;
 import io.github.pinkchampagne17.channelserver.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class SessionController {
 
     @PostMapping()
     public ResponseEntity<Session> createSession(
-            @RequestBody @Valid CreateSessionParameters parameters,
+            @RequestBody @Valid SessionCreateParameters parameters,
             BindingResult bindingResult
     ) {
         if (bindingResult.hasErrors()) {

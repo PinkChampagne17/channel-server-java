@@ -26,7 +26,7 @@
 
     <insert
             id="createOrUpdateRequest"
-            parameterType="io.github.pinkchampagne17.channelserver.parameters.CreateRequestParameters"
+            parameterType="io.github.pinkchampagne17.channelserver.parameters.RequestCreateParameters"
     >
         insert into request(applicant_gid, target_gid, reason)
         values(#{applicantGid}, #{targetGid}, #{reason})
@@ -35,7 +35,7 @@
 
     <update
             id="updateStatus"
-            parameterType="io.github.pinkchampagne17.channelserver.parameters.UpdateRequestStatusParameters"
+            parameterType="io.github.pinkchampagne17.channelserver.parameters.RequestStatusUpdateParameters"
     >
         update request
         set status = #{status}

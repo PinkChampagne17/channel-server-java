@@ -35,5 +35,5 @@ public class ExceptionInterceptor {
         var response = new ParameterInvalidException("There are some parameter(s) is invalid.").getErrorResponse();
         return ResponseEntity.status(response.getHttpStatus()).body(response);
     }
-    
+
 }

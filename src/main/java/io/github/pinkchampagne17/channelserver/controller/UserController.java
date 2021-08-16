@@ -2,7 +2,7 @@ package io.github.pinkchampagne17.channelserver.controller;
 
 import io.github.pinkchampagne17.channelserver.entity.User;
 import io.github.pinkchampagne17.channelserver.exception.ParameterInvalidException;
-import io.github.pinkchampagne17.channelserver.parameters.CreateUserParameters;
+import io.github.pinkchampagne17.channelserver.parameters.UserCreateParameters;
 import io.github.pinkchampagne17.channelserver.parameters.UserUpdateParameters;
 import io.github.pinkchampagne17.channelserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> createUser(
-            @Valid @RequestBody CreateUserParameters parameters,
+            @Valid @RequestBody UserCreateParameters parameters,
             BindingResult bindingResult) throws Exception {
 
         if (bindingResult.hasErrors()) {

@@ -4,8 +4,8 @@ import io.github.pinkchampagne17.channelserver.entity.User;
 import io.github.pinkchampagne17.channelserver.exception.EmailExistsException;
 import io.github.pinkchampagne17.channelserver.exception.UsernameExistsException;
 import io.github.pinkchampagne17.channelserver.exception.UsernameOrEmailExistsException;
-import io.github.pinkchampagne17.channelserver.parameters.CreateUserParameters;
-import io.github.pinkchampagne17.channelserver.parameters.GetUsersParameters;
+import io.github.pinkchampagne17.channelserver.parameters.UserCreateParameters;
+import io.github.pinkchampagne17.channelserver.parameters.UserQueryParameters;
 import io.github.pinkchampagne17.channelserver.parameters.UserUpdateParameters;
 import io.github.pinkchampagne17.channelserver.repository.UserRepository;
 import io.github.pinkchampagne17.channelserver.service.UserService;
@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByGid(Long gid) {
-        var parameters = new GetUsersParameters() {{
+        var parameters = new UserQueryParameters() {{
             setGid(gid);
         }};
         return getUser(parameters);
@@ -37,28 +37,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByHashId(String hashId) {
-        var parameters = new GetUsersParameters() {{
+        var parameters = new UserQueryParameters() {{
             setHashId(hashId);
         }};
         return getUser(parameters);
     }
 
     public User getUserByUsername(String username) {
-        var parameters = new GetUsersParameters() {{
+        var parameters = new UserQueryParameters() {{
             setUsername(username);
         }};
         return getUser(parameters);
     }
 
     public User getUserByEmail(String email) {
-        var parameters = new GetUsersParameters() {{
+        var parameters = new UserQueryParameters() {{
             setEmail(email);
         }};
         return getUser(parameters);
     }
 
     @Override
-    public User getUser(GetUsersParameters parameters) {
+    public User getUser(UserQueryParameters parameters) {
         parameters.setCount(1L);
 
         var users = userRepository.getUsers(parameters);
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public User createUser(CreateUserParameters parameters)
+    public User createUser(UserCreateParameters parameters)
             throws UsernameOrEmailExistsException, UsernameExistsException, EmailExistsException {
 
         var u = this.getUserByUsername(parameters.getUsername());

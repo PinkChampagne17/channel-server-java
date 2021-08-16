@@ -3,8 +3,8 @@ package io.github.pinkchampagne17.channelserver.service.impl;
 import io.github.pinkchampagne17.channelserver.entity.Request;
 import io.github.pinkchampagne17.channelserver.entity.RequestStatus;
 import io.github.pinkchampagne17.channelserver.exception.ParameterInvalidException;
-import io.github.pinkchampagne17.channelserver.parameters.CreateRequestParameters;
-import io.github.pinkchampagne17.channelserver.parameters.UpdateRequestStatusParameters;
+import io.github.pinkchampagne17.channelserver.parameters.RequestCreateParameters;
+import io.github.pinkchampagne17.channelserver.parameters.RequestStatusUpdateParameters;
 import io.github.pinkchampagne17.channelserver.repository.RequestRepository;
 import io.github.pinkchampagne17.channelserver.service.FriendshipService;
 import io.github.pinkchampagne17.channelserver.service.RequestService;
@@ -32,12 +32,12 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public Request getRequestsByApplicantGidAndTargetGid(Long applicantGid, Long targetGid) {
+    public Request getRequestByGid(Long applicantGid, Long targetGid) {
         return this.requestRepository.getRequestByGid(applicantGid, targetGid);
     }
 
     @Override
-    public void createOrUpdateRequest(CreateRequestParameters parameters) {
+    public void createOrUpdateRequest(RequestCreateParameters parameters) {
         var areTheyFriend = this.friendshipService.AreTheyFriend(parameters.getApplicantGid(), parameters.getTargetGid());
         if (areTheyFriend) {
             throw new ParameterInvalidException("You are already friends.");
@@ -47,8 +47,8 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public void updateStatus(UpdateRequestStatusParameters parameters) {
-        var request = this.getRequestsByApplicantGidAndTargetGid(
+    public void updateStatus(RequestStatusUpdateParameters parameters) {
+        var request = this.getRequestByGid(
                 parameters.getApplicantGid(),
                 parameters.getTargetGid()
         );

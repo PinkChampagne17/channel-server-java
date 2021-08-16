@@ -28,7 +28,7 @@
             id="getUsers"
             resultType="io.github.pinkchampagne17.channelserver.entity.User"
             resultMap="userMap"
-            parameterType="io.github.pinkchampagne17.channelserver.parameters.GetUsersParameters"
+            parameterType="io.github.pinkchampagne17.channelserver.parameters.UserQueryParameters"
     >
         select u.gid, u.hash_id, u.email, u.password, u.name, u.bio, u.photo_md5, u.is_online, g.create_at, g.update_at, g.username
         from `user` u join `gid` g on u.gid = g.gid
@@ -56,7 +56,7 @@
 
     <insert
             id="createGidAndUsername"
-            parameterType="io.github.pinkchampagne17.channelserver.parameters.CreateUserParameters"
+            parameterType="io.github.pinkchampagne17.channelserver.parameters.UserCreateParameters"
             useGeneratedKeys="true"
             keyProperty="gid"
     >
@@ -65,7 +65,7 @@
 
     <insert
             id="createUserByGid"
-            parameterType="io.github.pinkchampagne17.channelserver.parameters.CreateUserParameters"
+            parameterType="io.github.pinkchampagne17.channelserver.parameters.UserCreateParameters"
     >
         insert into `user`(gid, email, password, name, hash_id)
         values(#{gid}, #{email}, #{password}, #{name}, #{hashId})
