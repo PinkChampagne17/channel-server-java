@@ -6,6 +6,7 @@ import io.github.pinkchampagne17.channelserver.exception.UsernameExistsException
 import io.github.pinkchampagne17.channelserver.exception.UsernameOrEmailExistsException;
 import io.github.pinkchampagne17.channelserver.parameters.CreateUserParameters;
 import io.github.pinkchampagne17.channelserver.parameters.GetUsersParameters;
+import io.github.pinkchampagne17.channelserver.parameters.UserUpdateParameters;
 import io.github.pinkchampagne17.channelserver.repository.UserRepository;
 import io.github.pinkchampagne17.channelserver.service.UserService;
 import io.github.pinkchampagne17.channelserver.util.HashId;
@@ -110,6 +111,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getCurrentUser(HttpServletRequest request) {
         return (User)request.getAttribute("user");
+    }
+
+    @Override
+    public void UpdateUser(UserUpdateParameters parameters) {
+        this.userRepository.updateUser(parameters);
     }
 
 }

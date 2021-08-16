@@ -3,6 +3,7 @@ package io.github.pinkchampagne17.channelserver.service;
 import io.github.pinkchampagne17.channelserver.entity.User;
 import io.github.pinkchampagne17.channelserver.parameters.CreateUserParameters;
 import io.github.pinkchampagne17.channelserver.parameters.GetUsersParameters;
+import io.github.pinkchampagne17.channelserver.parameters.UserUpdateParameters;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,4 +13,5 @@ public interface UserService {
     User getUserByHashId(String id);
     User createUser(CreateUserParameters parameters);
     User getCurrentUser(HttpServletRequest request);
+    void UpdateUser(UserUpdateParameters parameters);
 }

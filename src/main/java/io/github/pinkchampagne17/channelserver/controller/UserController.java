@@ -3,8 +3,10 @@ package io.github.pinkchampagne17.channelserver.controller;
 import io.github.pinkchampagne17.channelserver.entity.User;
 import io.github.pinkchampagne17.channelserver.exception.ParameterInvalidException;
 import io.github.pinkchampagne17.channelserver.parameters.CreateUserParameters;
+import io.github.pinkchampagne17.channelserver.parameters.UserUpdateParameters;
 import io.github.pinkchampagne17.channelserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -31,12 +33,6 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @GetMapping("/myself")
-    public ResponseEntity<User> getMyself(HttpServletRequest request) {
-        var user = userService.getCurrentUser(request);
-        return ResponseEntity.ok(user);
-    }
-
     @PostMapping
     public ResponseEntity<User> createUser(
             @Valid @RequestBody CreateUserParameters parameters,
@@ -47,7 +43,29 @@ public class UserController {
         }
 
         var user = this.userService.createUser(parameters);
-        return ResponseEntity.ok(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    }
+
+    @PatchMapping("/{hashId}")
+    public ResponseEntity<?> updateUser(
+            HttpServletRequest request,
+            @PathVariable String hashId,
+            @RequestBody @Valid UserUpdateParameters parameters,
+            BindingResult bindingResult) {
+
+        var user = userService.getCurrentUser(request);
+        if (!user.getHashId().equals(hashId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        if (bindingResult.hasErrors()) {
+            throw new ParameterInvalidException(bindingResult);
+        }
+
+        parameters.setGid(user.getGid());
+        this.userService.UpdateUser(parameters);
+
+        return ResponseEntity.noContent().build();
     }
 
 }

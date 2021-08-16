@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="io.github.pinkchampagne17.channelserver.repository.UserRepository">
+
     <resultMap id="userMap" type="io.github.pinkchampagne17.channelserver.entity.User">
         <result column="hash_id" property="hashId"/>
         <result column="photo_md5" property="photoMd5"/>
@@ -10,6 +11,7 @@
         <result column="create_at" property="createAt"/>
         <result column="update_at" property="updateAt"/>
     </resultMap>
+
     <select
             id="getUserById"
             resultType="io.github.pinkchampagne17.channelserver.entity.User"
@@ -21,6 +23,7 @@
         where u.gid = #{gid}
         limit 1
     </select>
+
     <select
             id="getUsers"
             resultType="io.github.pinkchampagne17.channelserver.entity.User"
@@ -50,6 +53,7 @@
             limit #{count}
         </if>
     </select>
+
     <insert
             id="createGidAndUsername"
             parameterType="io.github.pinkchampagne17.channelserver.parameters.CreateUserParameters"
@@ -58,6 +62,7 @@
     >
         insert into gid(username) values(#{username})
     </insert>
+
     <insert
             id="createUserByGid"
             parameterType="io.github.pinkchampagne17.channelserver.parameters.CreateUserParameters"
@@ -65,5 +70,30 @@
         insert into `user`(gid, email, password, name, hash_id)
         values(#{gid}, #{email}, #{password}, #{name}, #{hashId})
     </insert>
+
+    <update
+            id="updateUser"
+            parameterType="io.github.pinkchampagne17.channelserver.parameters.UserUpdateParameters"
+    >
+        update user u join gid g on u.gid = g.gid
+        <trim prefix="set" suffixOverrides=",">
+            <if test="email!=null">
+                email = #{email},
+            </if>
+            <if test="password!=null">
+                password = #{password},
+            </if>
+            <if test="name!=null">
+                name = #{name},
+            </if>
+            <if test="bio!=null">
+                bio = #{bio},
+            </if>
+            <if test="username!=null">
+                username = #{username},
+            </if>
+        </trim>
+        where u.gid = #{gid}
+    </update>
 
 </mapper>
