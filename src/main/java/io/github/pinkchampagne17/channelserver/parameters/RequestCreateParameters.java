@@ -10,16 +10,6 @@ import javax.validation.constraints.Size;
 @Data
 public class RequestCreateParameters {
 
-    @Null
-    private Long applicantGid;
-
-    @Null
-    private Long targetGid;
-
-    @NotNull
-    @JsonAlias("targetId")
-    private String targetHashId;
-
     @Size(max = 128)
     private String reason;
 

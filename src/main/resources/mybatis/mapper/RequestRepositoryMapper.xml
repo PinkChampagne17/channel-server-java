@@ -26,7 +26,7 @@
 
     <insert
             id="createOrUpdateRequest"
-            parameterType="io.github.pinkchampagne17.channelserver.parameters.RequestCreateParameters"
+            parameterType="io.github.pinkchampagne17.channelserver.entity.Request"
     >
         insert into request(applicant_gid, target_gid, reason)
         values(#{applicantGid}, #{targetGid}, #{reason})

@@ -40,9 +40,10 @@ public class RequestController {
         return ResponseEntity.ok(requests);
     }
 
-    @PutMapping("/requests")
+    @PutMapping("/c/{targetHashId}/requests")
     public ResponseEntity<?> createOrUpdateRequest(
             @RequestBody @Valid RequestCreateParameters parameters,
+            @PathVariable String targetHashId,
             BindingResult bindingResult,
             HttpServletRequest servletRequest
     ) {
@@ -51,15 +52,18 @@ public class RequestController {
         }
 
         var currentUser = userService.getCurrentUser(servletRequest);
-        var targetUser = userService.getUserByHashId(parameters.getTargetHashId());
+        var targetUser = userService.getUserByHashId(targetHashId);
         if (targetUser == null) {
             throw new ParameterInvalidException("The target user not exists.");
         }
 
-        parameters.setApplicantGid(currentUser.getGid());
-        parameters.setTargetGid(targetUser.getGid());
+        var request = Request.builder()
+                .applicantGid(currentUser.getGid())
+                .targetGid(targetUser.getGid())
+                .reason(parameters.getReason())
+                .build();
 
-        requestService.createOrUpdateRequest(parameters);
+        requestService.createOrUpdateRequest(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

@@ -13,7 +13,7 @@ import java.util.List;
 public interface RequestRepository {
     List<Request> getRequestsByGid(Long gid);
     Request getRequestByGid(Long applicantGid, Long targetGid);
-    int createOrUpdateRequest(RequestCreateParameters parameters);
+    int createOrUpdateRequest(Request request);
     int updateStatus(RequestStatusUpdateParameters parameters);
     int removeRequest(Long gid, Long anotherGid);
 }

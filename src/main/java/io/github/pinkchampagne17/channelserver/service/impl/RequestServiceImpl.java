@@ -37,13 +37,13 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public void createOrUpdateRequest(RequestCreateParameters parameters) {
-        var areTheyFriend = this.friendshipService.AreTheyFriend(parameters.getApplicantGid(), parameters.getTargetGid());
+    public void createOrUpdateRequest(Request request) {
+        var areTheyFriend = this.friendshipService.AreTheyFriend(request.getApplicantGid(), request.getTargetGid());
         if (areTheyFriend) {
-            throw new ParameterInvalidException("You are already friends.");
+            throw new ParameterInvalidException("You are already friend.");
         }
 
-        this.requestRepository.createOrUpdateRequest(parameters);
+        this.requestRepository.createOrUpdateRequest(request);
     }
 
     @Override

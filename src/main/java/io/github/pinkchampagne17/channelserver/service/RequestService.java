@@ -9,6 +9,6 @@ import java.util.List;
 public interface RequestService {
     List<Request> getRequestsByGid(Long gid);
     Request getRequestByGid(Long applicantGid, Long targetGid);
-    void createOrUpdateRequest(RequestCreateParameters parameters);
+    void createOrUpdateRequest(Request request);
     void updateStatus(RequestStatusUpdateParameters parameters);
 }
