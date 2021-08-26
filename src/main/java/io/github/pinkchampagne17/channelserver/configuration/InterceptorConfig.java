@@ -17,6 +17,6 @@ public class InterceptorConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(sessionInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/ping", "/sessions");
+                .excludePathPatterns("/ping", "/users", "/sessions");
     }
 }
