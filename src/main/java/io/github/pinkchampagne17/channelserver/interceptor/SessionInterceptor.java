@@ -29,20 +29,24 @@ public class SessionInterceptor implements HandlerInterceptor {
             throw new UnauthorizedException();
         }
 
-        if (!authorization.startsWith("basic ") || authorization.length() <= "basic ".length()) {
+        var AuthType = "Bearer ";
+
+        if (!authorization.startsWith(AuthType) || authorization.length() <= AuthType.length()) {
             throw new ParameterInvalidException("The format of authorization is invalid");
         }
 
-        var sessionStr = authorization.split("basic ")[1];
+        var sessionStr = authorization.split(AuthType)[1];
         var session = sessionService.getSession(sessionStr);
         if (session == null) {
             throw new SessionExpiredOrNotExistsException();
         }
 
         var currentUser = this.userService.getUserByGid(session.getGid());
+        if (currentUser == null) {
+            throw new SessionExpiredOrNotExistsException();
+        }
 
         request.setAttribute("user", currentUser);
-
         return true;
     }
 }
