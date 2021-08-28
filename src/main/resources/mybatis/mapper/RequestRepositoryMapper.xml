@@ -15,6 +15,17 @@
     </select>
 
     <select
+            id="getRequestByGid"
+            resultType="io.github.pinkchampagne17.channelserver.entity.Request"
+            parameterType="java.lang.Long"
+    >
+        select *
+        from request
+        where applicant_gid = #{applicantGid} or target_gid = #{targetGid}
+        limit 1
+    </select>
+
+    <select
             id="getRequestsByApplicantGidAndTargetGid"
             resultType="io.github.pinkchampagne17.channelserver.entity.Request"
             parameterType="java.lang.Long"

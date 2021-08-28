@@ -14,9 +14,7 @@
             id="createFriendship"
             parameterType="java.lang.Long"
     >
-        INSERT into friendship(gid, friend_gid)
-        values(#{gid}, #{friendGid}),
-        values(#{friendGid}, #{gid})
+        insert into friendship (gid, friend_gid) values (#{gid}, #{friendGid}), (#{friendGid}, #{gid})
     </insert>
 
     <select
