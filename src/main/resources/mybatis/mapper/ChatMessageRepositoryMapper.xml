@@ -3,7 +3,19 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="io.github.pinkchampagne17.channelserver.repository.ChatMessageRepository">
+
     <insert id="createMessage">
         insert into message(chat_id, sender_gid, `type`, content) values(#{chatId}, #{senderGid}, #{type}, #{content})
     </insert>
+
+    <select
+            id="queryChatMessages"
+            resultType="io.github.pinkchampagne17.channelserver.entity.ChatMessage"
+            parameterType="io.github.pinkchampagne17.channelserver.parameters.ChatMessageQueryParameters"
+    >
+        select *
+        from message
+        where chat_id = #{chatId}
+    </select>
+
 </mapper>
