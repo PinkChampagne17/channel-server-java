@@ -19,11 +19,11 @@ public class UserCreateParameters {
     @Email
     private String email;
 
-    @Pattern(regexp = ValidationRegexStrings.USERNAME)
-    private String username;
+    @Pattern(regexp = ValidationRegexStrings.LINK)
+    private String link;
 
     @Size(min = 1, max = 32)
-    private String name;
+    private String nickname;
 
     @Pattern(regexp = ValidationRegexStrings.PASSWORD)
     private String password;

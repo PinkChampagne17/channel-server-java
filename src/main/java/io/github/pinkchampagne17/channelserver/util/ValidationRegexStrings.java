@@ -5,5 +5,5 @@ public class ValidationRegexStrings {
     public static final String PASSWORD = "^[\\x20-\\x7E]{6,32}$";
 
     // Alphabet and number, length between 1 and 32
-    public static final String USERNAME = "^[A-Za-z0-9]{1,32}$";
+    public static final String LINK = "^[A-Za-z0-9]{1,32}$";
 }

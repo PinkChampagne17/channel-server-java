@@ -18,7 +18,7 @@
             resultMap="userMap"
             parameterType="java.lang.Long"
     >
-        select u.gid, u.hash_id, u.email, u.password, u.name, u.bio, u.photo_md5, u.is_online, g.create_at, g.update_at, g.username
+        select u.gid, u.hash_id, u.email, u.password, u.nickname, u.bio, u.photo_md5, u.is_online, g.create_at, g.update_at, g.link
         from `user` u join `gid` g on u.gid = g.gid
         where u.gid = #{gid}
         limit 1
@@ -30,7 +30,7 @@
             resultMap="userMap"
             parameterType="io.github.pinkchampagne17.channelserver.parameters.UserQueryParameters"
     >
-        select u.gid, u.hash_id, u.email, u.password, u.name, u.bio, u.photo_md5, u.is_online, g.create_at, g.update_at, g.username
+        select u.gid, u.hash_id, u.email, u.password, u.nickname, u.bio, u.photo_md5, u.is_online, g.create_at, g.update_at, g.link
         from `user` u join `gid` g on u.gid = g.gid
         <where>
             <if test="gid!=null">
@@ -39,8 +39,8 @@
             <if test="hashId!=null">
                 or u.hash_id = #{hashId}
             </if>
-            <if test="username!=null">
-                or g.username = #{username}
+            <if test="link!=null">
+                or g.link = #{link}
             </if>
             <if test="email!=null">
                 or u.email = #{email}
@@ -55,20 +55,11 @@
     </select>
 
     <insert
-            id="createGidAndUsername"
-            parameterType="io.github.pinkchampagne17.channelserver.parameters.UserCreateParameters"
-            useGeneratedKeys="true"
-            keyProperty="gid"
-    >
-        insert into gid(username) values(#{username})
-    </insert>
-
-    <insert
             id="createUserByGid"
             parameterType="io.github.pinkchampagne17.channelserver.parameters.UserCreateParameters"
     >
-        insert into `user`(gid, email, password, name, hash_id)
-        values(#{gid}, #{email}, #{password}, #{name}, #{hashId})
+        insert into `user`(gid, email, password, nickname, hash_id)
+        values(#{gid}, #{email}, #{password}, #{nickname}, #{hashId})
     </insert>
 
     <update
@@ -89,8 +80,8 @@
             <if test="bio!=null">
                 bio = #{bio},
             </if>
-            <if test="username!=null">
-                username = #{username},
+            <if test="link!=null">
+                link = #{link},
             </if>
         </trim>
         where u.gid = #{gid}

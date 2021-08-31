@@ -4,9 +4,11 @@ import io.github.pinkchampagne17.channelserver.entity.User;
 import io.github.pinkchampagne17.channelserver.exception.EmailExistsException;
 import io.github.pinkchampagne17.channelserver.exception.UsernameExistsException;
 import io.github.pinkchampagne17.channelserver.exception.UsernameOrEmailExistsException;
+import io.github.pinkchampagne17.channelserver.parameters.GidCreateParameters;
 import io.github.pinkchampagne17.channelserver.parameters.UserCreateParameters;
 import io.github.pinkchampagne17.channelserver.parameters.UserQueryParameters;
 import io.github.pinkchampagne17.channelserver.parameters.UserUpdateParameters;
+import io.github.pinkchampagne17.channelserver.repository.GidRepository;
 import io.github.pinkchampagne17.channelserver.repository.UserRepository;
 import io.github.pinkchampagne17.channelserver.service.UserService;
 import io.github.pinkchampagne17.channelserver.util.HashId;
@@ -23,6 +25,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private GidRepository gidRepository;
 
     @Autowired
     private PlatformTransactionManager transactionManager;
@@ -43,9 +48,9 @@ public class UserServiceImpl implements UserService {
         return getUser(parameters);
     }
 
-    public User getUserByUsername(String username) {
+    public User getUserByLink(String username) {
         var parameters = new UserQueryParameters() {{
-            setUsername(username);
+            setLink(username);
         }};
         return getUser(parameters);
     }
@@ -69,11 +74,11 @@ public class UserServiceImpl implements UserService {
         return users.get(0);
     }
 
-
+    @Override
     public User createUser(UserCreateParameters parameters)
             throws UsernameOrEmailExistsException, UsernameExistsException, EmailExistsException {
 
-        var u = this.getUserByUsername(parameters.getUsername());
+        var u = this.getUserByLink(parameters.getLink());
         if (u != null) {
             throw new UsernameExistsException();
         }
@@ -85,25 +90,29 @@ public class UserServiceImpl implements UserService {
 
         var txStatus = transactionManager.getTransaction(new DefaultTransactionDefinition());
         try {
-            this.userRepository.createGidAndUsername(parameters);
+            var gidCreateParameters = new GidCreateParameters() {{
+                setLink(parameters.getLink());
+            }};
+            this.gidRepository.createGid(gidCreateParameters);
 
-            var gid = parameters.getGid();
+            var gid = gidCreateParameters.getGid();
             var hashId = HashId.encodeOne(gid);
+            parameters.setGid(gid);
             parameters.setHashId(hashId);
 
             this.userRepository.createUserByGid(parameters);
             var user = this.userRepository.getUserById(gid);
-            transactionManager.commit(txStatus);
+
+            this.transactionManager.commit(txStatus);
 
             return user;
 
         } catch (Exception e) {
-            transactionManager.rollback(txStatus);
+            this.transactionManager.rollback(txStatus);
 
             if (e instanceof DuplicateKeyException) {
                 throw new UsernameOrEmailExistsException();
             }
-
             throw e;
         }
     }

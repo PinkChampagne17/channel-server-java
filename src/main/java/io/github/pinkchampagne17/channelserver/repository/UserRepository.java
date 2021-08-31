@@ -14,7 +14,6 @@ import java.util.List;
 public interface UserRepository {
     User getUserById(Long gid);
     List<User> getUsers(UserQueryParameters parameters);
-    int createGidAndUsername(UserCreateParameters parameters);
     int createUserByGid(UserCreateParameters parameters);
     int updateUser(UserUpdateParameters parameters);
 }

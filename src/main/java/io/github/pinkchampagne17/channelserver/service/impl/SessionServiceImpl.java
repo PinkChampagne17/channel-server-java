@@ -33,7 +33,7 @@ public class SessionServiceImpl implements SessionService {
         if (isEmail) {
             condition.setEmail(parameters.getUsernameOrEmail());
         } else {
-            condition.setUsername(parameters.getUsernameOrEmail());
+            condition.setLink(parameters.getUsernameOrEmail());
         }
 
         var user = userService.getUser(condition);

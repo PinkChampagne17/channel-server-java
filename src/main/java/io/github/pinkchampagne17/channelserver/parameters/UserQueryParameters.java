@@ -6,7 +6,7 @@ import lombok.Data;
 public class UserQueryParameters {
     private Long gid;
     private String hashId;
-    private String username;
+    private String link;
     private String email;
     private String password;
     private Long count;

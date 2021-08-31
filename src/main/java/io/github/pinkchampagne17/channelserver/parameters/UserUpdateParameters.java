@@ -16,14 +16,14 @@ public class UserUpdateParameters {
     @Email
     private String email;
 
-    @Pattern(regexp = ValidationRegexStrings.USERNAME)
+    @Pattern(regexp = ValidationRegexStrings.LINK)
     private String username;
 
     @Pattern(regexp = ValidationRegexStrings.PASSWORD)
     private String password;
 
     @Size(min = 1, max = 32)
-    private String name;
+    private String nickname;
 
     @Size(max = 128)
     private String bio;
