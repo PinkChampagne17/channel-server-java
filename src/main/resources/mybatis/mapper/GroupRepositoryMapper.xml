@@ -81,4 +81,13 @@
         where gm.`group-gid` = #{gid}
     </select>
 
+    <select id="isUserOwnerOrAdmin"
+            resultType="java.lang.Boolean"
+            parameterType="java.lang.Long"
+    >
+        select count(*)
+        from `group-member`
+        where `group-gid` = #{groupGid} and `user-gid` = #{userGid} and (type=0 or type=1)
+        limit 1
+    </select>
 </mapper>

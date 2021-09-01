@@ -92,4 +92,9 @@ public class GroupServiceImpl implements GroupService {
     public boolean isUserInGroup(Long groupGid, Long userGid) {
         return this.groupRepository.isUserInGroup(groupGid, userGid);
     }
+
+    @Override
+    public boolean isUserOwnerOrAdmin(Long groupGid, Long userGid) {
+        return this.groupRepository.isUserInGroup(groupGid, userGid);
+    }
 }

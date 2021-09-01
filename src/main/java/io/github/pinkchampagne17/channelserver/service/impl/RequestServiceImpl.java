@@ -45,6 +45,7 @@ public class RequestServiceImpl implements RequestService {
         return this.requestRepository.getRequestByGid(applicantGid, targetGid);
     }
 
+    // this method has a bug
     @Override
     public void createOrUpdateRequest(Request request) {
         var areTheyFriend = this.friendshipService.AreTheyFriend(request.getApplicantGid(), request.getTargetGid());

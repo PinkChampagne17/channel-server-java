@@ -17,4 +17,5 @@ public interface GroupRepository {
     List<Group> queryGroupByUserGid(Long gid);
     List<GroupMember> queryMembersOfGroup(Long gid);
     boolean isUserInGroup(Long groupGid, Long userGid);
+    boolean isOwnerOrAdmin(Long groupGid, Long userGid);
 }
