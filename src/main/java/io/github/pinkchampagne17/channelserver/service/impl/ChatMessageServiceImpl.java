@@ -5,9 +5,11 @@ import io.github.pinkchampagne17.channelserver.exception.ParameterInvalidExcepti
 import io.github.pinkchampagne17.channelserver.parameters.ChatMessageCreateParameters;
 import io.github.pinkchampagne17.channelserver.parameters.ChatMessagePMQueryParameters;
 import io.github.pinkchampagne17.channelserver.parameters.ChatMessageQueryParameters;
+import io.github.pinkchampagne17.channelserver.parameters.GroupChatMessageCreateParameters;
 import io.github.pinkchampagne17.channelserver.repository.ChatMessageRepository;
 import io.github.pinkchampagne17.channelserver.service.ChatMessageService;
 import io.github.pinkchampagne17.channelserver.service.FriendshipService;
+import io.github.pinkchampagne17.channelserver.service.GroupService;
 import io.github.pinkchampagne17.channelserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,9 +28,11 @@ public class ChatMessageServiceImpl implements ChatMessageService {
     @Autowired
     private FriendshipService friendshipService;
 
+    @Autowired
+    private GroupService groupService;
+
     @Override
     public void createMessage(Long senderGid, ChatMessageCreateParameters parameters) {
-
         var receiver = this.userService.getUserByHashId(parameters.getReceiverHashId());
         if (receiver == null) {
             throw new ParameterInvalidException("This receiverId not available.");
@@ -47,6 +51,27 @@ public class ChatMessageServiceImpl implements ChatMessageService {
                 .content(parameters.getContent())
                 .build();
 
+        this.chatMessageRepository.createMessage(message);
+    }
+
+    @Override
+    public void createGroupMessage(Long groupGid, Long senderGid, GroupChatMessageCreateParameters parameters) {
+        var group = this.groupService.queryGroupByGid(groupGid);
+        if (group == null) {
+            throw new ParameterInvalidException("This group not exists");
+        }
+
+        var isUserInGroup = this.groupService.isUserInGroup(groupGid, senderGid);
+        if (!isUserInGroup) {
+            throw new ParameterInvalidException("You is not member of this group");
+        }
+
+        var message = ChatMessage.builder()
+                .ChatId(this.getChatIdOfGroup(groupGid))
+                .senderGid(senderGid)
+                .type(parameters.getType())
+                .content(parameters.getContent())
+                .build();
         this.chatMessageRepository.createMessage(message);
     }
 
@@ -72,6 +97,10 @@ public class ChatMessageServiceImpl implements ChatMessageService {
         }
 
         return String.format("%d-%d", gid1, gid2);
+    }
+
+    private String getChatIdOfGroup(Long groupGid) {
+        return String.valueOf(groupGid);
     }
 
 }

@@ -4,5 +4,6 @@
     <typeHandlers>
         <typeHandler handler="org.apache.ibatis.type.EnumOrdinalTypeHandler" javaType="io.github.pinkchampagne17.channelserver.entity.RequestStatus"/>
         <typeHandler handler="org.apache.ibatis.type.EnumOrdinalTypeHandler" javaType="io.github.pinkchampagne17.channelserver.entity.ChatMessageType"/>
+        <typeHandler handler="org.apache.ibatis.type.EnumOrdinalTypeHandler" javaType="io.github.pinkchampagne17.channelserver.entity.GroupMemberType"/>
     </typeHandlers>
 </configuration>

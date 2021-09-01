@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.pinkchampagne17.channelserver.repository.GroupRepository">
+
+    <resultMap id="groupMap" type="io.github.pinkchampagne17.channelserver.entity.Group">
+        <result column="hash_id" property="hashId"/>
+        <result column="create_at" property="createAt"/>
+        <result column="update_at" property="updateAt"/>
+    </resultMap>
+
+    <insert
+            id="createGroup"
+            parameterType="io.github.pinkchampagne17.channelserver.entity.Group"
+    >
+        insert into `group`(gid, hash_id, name, bio) values(#{gid}, #{hashId}, #{name}, #{bio})
+    </insert>
+
+    <insert
+            id="addMember"
+            parameterType="io.github.pinkchampagne17.channelserver.parameters.GroupAddMemberParameters"
+    >
+        insert into `group-member`(`group-gid`, `user-gid`, type) VALUES (#{groupGid}, #{userGid}, #{type})
+    </insert>
+
+    <select
+            id="queryGroupByGid"
+            resultType="io.github.pinkchampagne17.channelserver.entity.Group"
+            resultMap="groupMap"
+            parameterType="java.lang.Long"
+    >
+        select *
+        from `group` join gid on `group`.gid = gid.gid
+        where `group`.gid = #{gid}
+        limit 1
+    </select>
+
+    <select
+            id="isUserInGroup"
+            parameterType="java.lang.Long"
+            resultType="java.lang.Boolean"
+    >
+        select count(*) count
+        from `group-member`
+        where `group-gid` = #{groupGid} and `user-gid` = #{userGid}
+        limit 1
+    </select>
+
+</mapper>

@@ -5,7 +5,9 @@ import io.github.pinkchampagne17.channelserver.entity.User;
 import io.github.pinkchampagne17.channelserver.exception.ParameterInvalidException;
 import io.github.pinkchampagne17.channelserver.parameters.ChatMessageCreateParameters;
 import io.github.pinkchampagne17.channelserver.parameters.ChatMessagePMQueryParameters;
+import io.github.pinkchampagne17.channelserver.parameters.GroupChatMessageCreateParameters;
 import io.github.pinkchampagne17.channelserver.service.ChatMessageService;
+import io.github.pinkchampagne17.channelserver.service.GroupService;
 import io.github.pinkchampagne17.channelserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 @RestController
@@ -23,6 +24,9 @@ public class ChatMessageController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private GroupService groupService;
 
     @Autowired
     private ChatMessageService chatMessageService;
@@ -45,7 +49,32 @@ public class ChatMessageController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    // The method has not been tested yet
+    @PostMapping("/groups/{hashId}/messages")
+    public ResponseEntity<?> createGroupMessage(
+            @RequestAttribute(name = "user") User currentUser,
+            @PathVariable String hashId,
+            @RequestBody @Valid GroupChatMessageCreateParameters parameters,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+            throw new ParameterInvalidException(bindingResult);
+        }
+
+        var group = this.groupService.queryGroupByHashId(hashId);
+        if (group == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        var isUserInGroup = this.groupService.isUserInGroup(group.getGid(), currentUser.getGid());
+        if (!isUserInGroup) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        this.chatMessageService.createGroupMessage(group.getGid(), currentUser.getGid(), parameters);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
     @GetMapping("/c/me/friends/{targetUserHashId}/messages")
     public ResponseEntity<List<ChatMessage>> queryPrivateChatMessage(
             @RequestAttribute(name = "user") User currentUser,
