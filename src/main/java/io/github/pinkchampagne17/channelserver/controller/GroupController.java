@@ -1,11 +1,11 @@
 package io.github.pinkchampagne17.channelserver.controller;
 
 import io.github.pinkchampagne17.channelserver.entity.Group;
+import io.github.pinkchampagne17.channelserver.entity.GroupMember;
 import io.github.pinkchampagne17.channelserver.entity.User;
 import io.github.pinkchampagne17.channelserver.exception.ParameterInvalidException;
 import io.github.pinkchampagne17.channelserver.parameters.GroupCreateParameters;
 import io.github.pinkchampagne17.channelserver.service.GroupService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,5 +51,21 @@ public class GroupController {
         var gid = currentUser.getGid();
         var groups = this.groupService.queryGroupByUserGid(gid);
         return ResponseEntity.ok(groups);
+    }
+
+    @GetMapping("groups/{hashId}/members")
+    public ResponseEntity<List<GroupMember>> queryMembersOfGroup(
+            @RequestAttribute("user") User currentUser,
+            @PathVariable String hashId
+    ) {
+        var group = this.groupService.queryGroupByHashId(hashId);
+        if (group == null) {
+            return ResponseEntity.notFound().build();
+        }
+        if(!this.groupService.isUserInGroup(group.getGid(), currentUser.getGid())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        var members = this.groupService.queryMembersOfGroup(group.getGid());
+        return ResponseEntity.ok(members);
     }
 }

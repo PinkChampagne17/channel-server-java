@@ -1,6 +1,7 @@
 package io.github.pinkchampagne17.channelserver.service;
 
 import io.github.pinkchampagne17.channelserver.entity.Group;
+import io.github.pinkchampagne17.channelserver.entity.GroupMember;
 import io.github.pinkchampagne17.channelserver.entity.User;
 import io.github.pinkchampagne17.channelserver.parameters.GroupCreateParameters;
 
@@ -11,5 +12,6 @@ public interface GroupService {
     Group queryGroupByGid(Long gid);
     Group queryGroupByHashId(String hashId);
     List<Group> queryGroupByUserGid(Long gid);
+    List<GroupMember> queryMembersOfGroup(Long gid);
     boolean isUserInGroup(Long groupGid, Long userGid);
 }

@@ -10,6 +10,14 @@
         <result column="update_at" property="updateAt"/>
     </resultMap>
 
+    <resultMap id="userMap" type="io.github.pinkchampagne17.channelserver.entity.User">
+        <result column="hash_id" property="hashId"/>
+        <result column="photo_md5" property="photoMd5"/>
+        <result column="is_online" property="isOnline"/>
+        <result column="create_at" property="createAt"/>
+        <result column="update_at" property="updateAt"/>
+    </resultMap>
+
     <insert
             id="createGroup"
             parameterType="io.github.pinkchampagne17.channelserver.entity.Group"
@@ -60,6 +68,17 @@
             from `group-member`
             where `user-gid` = #{gid}
         )
+    </select>
+    
+    <select
+            id="queryMembersOfGroup"
+            resultType="io.github.pinkchampagne17.channelserver.entity.GroupMember"
+            resultMap="userMap"
+            parameterType="java.lang.Long"
+    >
+        select *
+        from `group-member` gm join user u on gm.`user-gid` = u.gid
+        where gm.`group-gid` = #{gid}
     </select>
 
 </mapper>

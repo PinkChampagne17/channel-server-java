@@ -1,6 +1,7 @@
 package io.github.pinkchampagne17.channelserver.service.impl;
 
 import io.github.pinkchampagne17.channelserver.entity.Group;
+import io.github.pinkchampagne17.channelserver.entity.GroupMember;
 import io.github.pinkchampagne17.channelserver.entity.GroupMemberType;
 import io.github.pinkchampagne17.channelserver.entity.User;
 import io.github.pinkchampagne17.channelserver.exception.ParameterInvalidException;
@@ -80,6 +81,11 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public List<Group> queryGroupByUserGid(Long gid) {
         return this.groupRepository.queryGroupByUserGid(gid);
+    }
+
+    @Override
+    public List<GroupMember> queryMembersOfGroup(Long gid) {
+        return this.groupRepository.queryMembersOfGroup(gid);
     }
 
     @Override
