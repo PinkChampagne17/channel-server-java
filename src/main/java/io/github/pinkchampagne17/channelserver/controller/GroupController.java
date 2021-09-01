@@ -5,6 +5,7 @@ import io.github.pinkchampagne17.channelserver.entity.User;
 import io.github.pinkchampagne17.channelserver.exception.ParameterInvalidException;
 import io.github.pinkchampagne17.channelserver.parameters.GroupCreateParameters;
 import io.github.pinkchampagne17.channelserver.service.GroupService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 public class GroupController {
@@ -42,5 +44,12 @@ public class GroupController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(group);
+    }
+
+    @GetMapping("/users/me/groups")
+    public ResponseEntity<List<Group>> queryGroupByUserGid(@RequestAttribute("user") User currentUser) {
+        var gid = currentUser.getGid();
+        var groups = this.groupService.queryGroupByUserGid(gid);
+        return ResponseEntity.ok(groups);
     }
 }

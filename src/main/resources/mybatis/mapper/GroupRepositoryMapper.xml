@@ -47,4 +47,19 @@
         limit 1
     </select>
 
+    <select
+            id="queryGroupByUserGid"
+            resultType="io.github.pinkchampagne17.channelserver.entity.Group"
+            resultMap="groupMap"
+            parameterType="java.lang.Long"
+    >
+        select *
+        from `group` join gid on `group`.gid = gid.gid
+        where `group`.gid in (
+            select `group-gid`
+            from `group-member`
+            where `user-gid` = #{gid}
+        )
+    </select>
+
 </mapper>

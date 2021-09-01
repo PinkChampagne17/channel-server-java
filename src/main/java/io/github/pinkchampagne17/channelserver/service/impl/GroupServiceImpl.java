@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import java.util.List;
+
 @Service
 public class GroupServiceImpl implements GroupService {
 
@@ -73,6 +75,11 @@ public class GroupServiceImpl implements GroupService {
     public Group queryGroupByHashId(String hashID) {
         var gid = HashId.decodeOne(hashID);
         return this.queryGroupByGid(gid);
+    }
+
+    @Override
+    public List<Group> queryGroupByUserGid(Long gid) {
+        return this.groupRepository.queryGroupByUserGid(gid);
     }
 
     @Override
