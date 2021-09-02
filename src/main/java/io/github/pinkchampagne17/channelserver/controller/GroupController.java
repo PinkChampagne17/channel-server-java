@@ -6,6 +6,7 @@ import io.github.pinkchampagne17.channelserver.entity.User;
 import io.github.pinkchampagne17.channelserver.exception.ParameterInvalidException;
 import io.github.pinkchampagne17.channelserver.parameters.GroupCreateParameters;
 import io.github.pinkchampagne17.channelserver.service.GroupService;
+import io.github.pinkchampagne17.channelserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,9 @@ public class GroupController {
 
     @Autowired
     private GroupService groupService;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/groups")
     public ResponseEntity<Group> createGroup(
@@ -53,7 +57,7 @@ public class GroupController {
         return ResponseEntity.ok(groups);
     }
 
-    @GetMapping("groups/{hashId}/members")
+    @GetMapping("/groups/{hashId}/members")
     public ResponseEntity<List<GroupMember>> queryMembersOfGroup(
             @RequestAttribute("user") User currentUser,
             @PathVariable String hashId
@@ -67,5 +71,36 @@ public class GroupController {
         }
         var members = this.groupService.queryMembersOfGroup(group.getGid());
         return ResponseEntity.ok(members);
+    }
+
+    @DeleteMapping("/groups/{groupHashId}/members/{userHashId}")
+    public ResponseEntity<?> removeMember(
+            @RequestAttribute("user") User currentUser,
+            @PathVariable("groupHashId") String groupHashId,
+            @PathVariable("userHashId") String userHashId
+    ) {
+        var group = this.groupService.queryGroupByHashId(groupHashId);
+        if (group == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        var isOwnerOrAdmin = this.groupService.isUserOwnerOrAdmin(group.getGid(), currentUser.getGid());
+        if (!isOwnerOrAdmin) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        var user = this.userService.getUserByHashId(userHashId);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        var userInGroup = this.groupService.isUserInGroup(group.getGid(), user.getGid());
+        if (!userInGroup) {
+            return ResponseEntity.notFound().build();
+        }
+
+        this.groupService.removeMember(group.getGid(), user.getGid());
+
+        return ResponseEntity.notFound().build();
     }
 }

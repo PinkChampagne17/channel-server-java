@@ -10,6 +10,7 @@ import io.github.pinkchampagne17.channelserver.parameters.GroupAddMemberParamete
 import io.github.pinkchampagne17.channelserver.parameters.GroupCreateParameters;
 import io.github.pinkchampagne17.channelserver.repository.GidRepository;
 import io.github.pinkchampagne17.channelserver.repository.GroupRepository;
+import io.github.pinkchampagne17.channelserver.repository.RequestRepository;
 import io.github.pinkchampagne17.channelserver.service.GroupService;
 import io.github.pinkchampagne17.channelserver.util.HashId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ import java.util.List;
 
 @Service
 public class GroupServiceImpl implements GroupService {
+
+    @Autowired
+    private RequestRepository requestRepository;
 
     @Autowired
     private GidRepository gidRepository;
@@ -48,7 +52,7 @@ public class GroupServiceImpl implements GroupService {
             group.setHashId(HashId.encodeOne(gid));
 
             this.groupRepository.createGroup(group);
-            this.groupRepository.addMember(new GroupAddMemberParameters() {{
+            this.addMember(new GroupAddMemberParameters() {{
                 setGroupGid(gid);
                 setUserGid(owner.getGid());
                 setType(GroupMemberType.OWNER);
@@ -95,6 +99,25 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public boolean isUserOwnerOrAdmin(Long groupGid, Long userGid) {
-        return this.groupRepository.isUserInGroup(groupGid, userGid);
+        return this.groupRepository.isOwnerOrAdmin(groupGid, userGid);
+    }
+
+    @Override
+    public void addMember(GroupAddMemberParameters parameters) {
+        this.groupRepository.addMember(parameters);
+    }
+
+    @Override
+    public void removeMember(Long groupGid, Long userGid) {
+        var txStatus = this.transactionManager.getTransaction(new DefaultTransactionDefinition());
+        try {
+            this.requestRepository.removeRequest(userGid, groupGid);
+            this.groupRepository.removeMember(groupGid, userGid);
+
+            this.transactionManager.commit(txStatus);
+        } catch (Exception e) {
+            this.transactionManager.rollback(txStatus);
+            throw e;
+        }
     }
 }

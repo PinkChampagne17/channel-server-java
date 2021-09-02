@@ -27,4 +27,8 @@ public class HttpException extends RuntimeException {
         this(httpStatus, code, code.toString());
     }
 
+    public HttpException(HttpStatus httpStatus) {
+        this(httpStatus, ErrorCode.EQUALS_HTTP_STATUS, ErrorCode.EQUALS_HTTP_STATUS.toString());
+    }
+
 }

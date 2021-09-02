@@ -81,7 +81,7 @@
         where gm.`group-gid` = #{gid}
     </select>
 
-    <select id="isUserOwnerOrAdmin"
+    <select id="isOwnerOrAdmin"
             resultType="java.lang.Boolean"
             parameterType="java.lang.Long"
     >
@@ -90,4 +90,12 @@
         where `group-gid` = #{groupGid} and `user-gid` = #{userGid} and (type=0 or type=1)
         limit 1
     </select>
+
+    <delete id="removeMember"
+            parameterType="java.lang.Long"
+    >
+        delete from `group-member`
+        where `group-gid` = #{groupGid} and `user-gid` = #{userGid}
+    </delete>
+
 </mapper>

@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
@@ -81,7 +80,6 @@ public class RequestController {
                 .reason(parameters.getReason())
                 .build();
 
-        // this method has a bug
         requestService.createOrUpdateRequest(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -89,7 +87,7 @@ public class RequestController {
 
     @PatchMapping("/c/{hashId}/requests/{applicantHashId}")
     public ResponseEntity<?> updateRequestStatus(
-            HttpServletRequest servletRequest,
+            @RequestAttribute("user") User currentUser,
             @PathVariable(name = "hashId") String HashId,
             @PathVariable(name = "applicantHashId") String applicantHashId,
             @RequestBody @Valid RequestStatusUpdateParameters parameters,
@@ -99,24 +97,33 @@ public class RequestController {
             throw new ParameterInvalidException(bindingResult);
         }
 
-        if (parameters.getStatus() == RequestStatus.WAITING) {
-            throw new ParameterInvalidException("The status can not be updated to 0 or 'WAITING'.");
+        var group = this.groupService.queryGroupByHashId(HashId);
+        if (group != null && !this.groupService.isUserOwnerOrAdmin(group.getGid(), currentUser.getGid())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        var currentUser = userService.getCurrentUser(servletRequest);
-        if (!currentUser.getHashId().equals(HashId)) {
+        var user = this.userService.getUserByHashId(HashId);
+        if (user != null && !currentUser.getHashId().equals(HashId)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        if (user == null && group == null) {
+            return ResponseEntity.notFound().build();
         }
 
         var applicant = userService.getUserByHashId(applicantHashId);
         if (applicant == null) {
-            throw new ParameterInvalidException("The target user not exists.");
+            return ResponseEntity.notFound().build();
+        }
+
+        if (parameters.getStatus() == RequestStatus.WAITING) {
+            throw new ParameterInvalidException("The status can not be updated to 0 or 'WAITING'.");
         }
 
         parameters.setApplicantGid(applicant.getGid());
-        parameters.setTargetGid(currentUser.getGid());
+        parameters.setTargetGid(Objects.requireNonNullElse(user, group).getGid());
 
-        requestService.updateStatus(parameters);
+        this.requestService.updateStatus(parameters);
 
         return ResponseEntity.noContent().build();
     }
