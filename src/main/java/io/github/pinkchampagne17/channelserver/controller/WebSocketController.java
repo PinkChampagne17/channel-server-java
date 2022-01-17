@@ -44,7 +44,7 @@ public class WebSocketController extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         var mapper = new ObjectMapper();
         var socketMessage =  mapper.readValue("{\"event\":\"message\",\"data\":\"Hello\"}", SocketMessage.class);
-        System.out.println(socketMessage.getDataAsChatMessage().getMessage());
+//        System.out.println(socketMessage.getDataAsChatMessage().getMessage());
 //        broadcastTextMessage(session.getId() + ": " + message.getPayload());
     }
 

@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 
 @Configuration
 public class DateFormatConfig {
-
     @Bean
     @Primary
     public ObjectMapper serializingObjectMapper() {
@@ -26,15 +25,11 @@ public class DateFormatConfig {
 
         return objectMapper;
     }
-
 }
 
 class LocalDateTimeSerializer extends JsonSerializer<LocalDateTime> {
-
     @Override
     public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         gen.writeString(value.toString() + "Z");    // Format time into ISO8601
     }
-
 }
-

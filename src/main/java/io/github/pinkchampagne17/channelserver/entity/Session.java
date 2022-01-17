@@ -1,6 +1,7 @@
 package io.github.pinkchampagne17.channelserver.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -10,7 +11,7 @@ public class Session {
     @JsonIgnore
     private Long gid;
 
-    @JsonIgnore
+    @JsonProperty("id")
     private String hashId;
 
     private String client;

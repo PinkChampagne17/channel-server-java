@@ -45,7 +45,6 @@ public class FriendshipServiceImpl implements FriendshipService {
         try {
             this.friendshipRepository.removeFriendship(gid, friendGid);
             this.requestRepository.removeRequest(gid, friendGid);
-
             transactionManager.commit(txStatus);
         } catch (Exception e) {
             transactionManager.rollback(txStatus);

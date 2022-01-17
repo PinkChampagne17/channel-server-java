@@ -1,11 +1,14 @@
 package io.github.pinkchampagne17.channelserver.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 @Data
 public class User extends GidBase {
-    private String email;
+    @JsonIgnore
     private String password;
+
+    private String email;
     private String nickname;
     private String bio;
     private String photoMd5;

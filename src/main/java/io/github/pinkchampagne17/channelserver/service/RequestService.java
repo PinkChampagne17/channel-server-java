@@ -1,7 +1,6 @@
 package io.github.pinkchampagne17.channelserver.service;
 
 import io.github.pinkchampagne17.channelserver.entity.Request;
-import io.github.pinkchampagne17.channelserver.parameters.RequestCreateParameters;
 import io.github.pinkchampagne17.channelserver.parameters.RequestStatusUpdateParameters;
 
 import java.util.List;
